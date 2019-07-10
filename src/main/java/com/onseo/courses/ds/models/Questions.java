@@ -1,6 +1,5 @@
 package com.onseo.courses.ds.models;
 
-import java.util.Timer;
 
 public class Questions {
 
