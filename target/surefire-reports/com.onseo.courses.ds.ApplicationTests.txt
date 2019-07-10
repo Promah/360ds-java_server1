@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.onseo.courses.ds.ApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.444 s - in com.onseo.courses.ds.ApplicationTests
