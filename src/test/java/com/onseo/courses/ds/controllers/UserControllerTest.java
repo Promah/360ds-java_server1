@@ -12,12 +12,20 @@ public class UserControllerTest {
     }
 
     @Test
+<<<<<<< HEAD
     public void getUserlist() {
+=======
+    public void userlist() {
+>>>>>>> 4eb5e1a... Initial commit
 
     }
 
     @Test
+<<<<<<< HEAD
     public void getUser() {
+=======
+    public void user() {
+>>>>>>> 4eb5e1a... Initial commit
 
     }
 
