@@ -14,23 +14,23 @@ public class UserController {
                            @RequestParam(value = "password", required = true)String password){
 
 
-        return "";
+        return "login " + login + " password " + password;
     }
 
 
     @GetMapping("/api/userlist")
-    public String userlist(){
+    public String getUserlist(){
 
 
-        return "";
+        return "some userlist";
     }
 
 
     @GetMapping("/api/user")
-    public String user(@RequestParam(value = "userid", required = true)String userid){
+    public String getUser(@RequestParam(value = "userid", required = true)String userid){
 
 
-        return "";
+        return "userid " + userid;
     }
 
 

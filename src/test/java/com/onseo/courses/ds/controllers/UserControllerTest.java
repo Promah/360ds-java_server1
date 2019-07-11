@@ -12,12 +12,12 @@ public class UserControllerTest {
     }
 
     @Test
-    public void userlist() {
+    public void getUserlist() {
 
     }
 
     @Test
-    public void user() {
+    public void getUser() {
 
     }
 
