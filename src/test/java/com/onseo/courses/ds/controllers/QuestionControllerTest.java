@@ -5,7 +5,11 @@ import org.junit.Test;
 public class QuestionControllerTest {
 
     @Test
+<<<<<<< HEAD
     public void getQuestionsTest()throws Exception{
+=======
+    public void getQuestionsTest(){
+>>>>>>> aedc160... Add QuestionController and tmp class TestClassResponse
 
     }
 
@@ -20,7 +24,12 @@ public class QuestionControllerTest {
     }
 
     @Test
+<<<<<<< HEAD
     public void getResultsTest() throws Exception{
+=======
+    public void getResultsTest(){
+
+>>>>>>> aedc160... Add QuestionController and tmp class TestClassResponse
     }
 
 
