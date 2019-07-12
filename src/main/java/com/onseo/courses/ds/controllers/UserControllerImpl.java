@@ -4,7 +4,7 @@ import com.onseo.courses.ds.interfaces.BaseUserController;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController implements BaseUserController {
+public class UserControllerImpl implements BaseUserController {
 
 
     @Override
