@@ -13,14 +13,14 @@ public interface BaseQuestionController {
     public String getQuestions();
 
     @PostMapping("/answers")
-    public String getAnswers(@RequestParam(name = "userId") String user_id,
-                             @RequestParam(name = "questionId") String question_id,
-                             @RequestParam(name = "answerIds") String answers_id
+    public String getAnswers(@RequestParam(name = "usesId") Integer user_id,
+                             @RequestParam(name = "questionId") Integer question_id,
+                             @RequestParam(name = "answerIds") Integer[] answers_id
     );
 
     @GetMapping("/summary")
     public String getSummary();
 
     @GetMapping("/results")
-    public TemporaryClassResponse getResults(@RequestParam(name = "userId") String user_id);
+    public TemporaryClassResponse getResults(@RequestParam(name = "userId") Integer user_id);
 }
