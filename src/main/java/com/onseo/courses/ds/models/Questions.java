@@ -9,6 +9,7 @@ public class Questions {
     private String timer;
     private long rightAnswer_Id;
     private String answers;
+    private String showInputField;
 
     public long getId() {
         return id;
@@ -58,16 +59,24 @@ public class Questions {
         this.answers = answers;
     }
 
+    public String getShowInputField() {
+        return showInputField;
+    }
+
+    public void setShowInputField(String showInputField) {
+        this.showInputField = showInputField;
+    }
+
     @Override
     public String toString() {
         return "Questions{" +
                 "id=" + id +
                 ", tittle='" + tittle + '\'' +
                 ", difficulty='" + difficulty + '\'' +
-                ", timer=" + timer +
+                ", timer='" + timer + '\'' +
                 ", rightAnswer_Id=" + rightAnswer_Id +
                 ", answers='" + answers + '\'' +
+                ", showInputField='" + showInputField + '\'' +
                 '}';
     }
-
 }
