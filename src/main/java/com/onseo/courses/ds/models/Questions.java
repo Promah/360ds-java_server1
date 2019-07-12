@@ -3,19 +3,19 @@ package com.onseo.courses.ds.models;
 
 public class Questions {
 
-    private long id;
+    private String id;
     private String tittle;
     private String difficulty;
     private String timer;
-    private long rightAnswer_Id;
+    private String rightAnswer_Id;
     private String answers;
     private String showInputField;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -43,11 +43,11 @@ public class Questions {
         this.timer = timer;
     }
 
-    public long getRightAnswer_Id() {
+    public String getRightAnswer_Id() {
         return rightAnswer_Id;
     }
 
-    public void setRightAnswer_Id(long rightAnswer_Id) {
+    public void setRightAnswer_Id(String rightAnswer_Id) {
         this.rightAnswer_Id = rightAnswer_Id;
     }
 
