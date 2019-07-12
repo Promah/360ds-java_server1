@@ -1,37 +1,31 @@
 package com.onseo.courses.ds.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.onseo.courses.ds.interfaces.BaseUserController;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController {
+public class UserController implements BaseUserController {
 
 
-    @PostMapping("/api/authuser")
-    public String authUser(@RequestParam(value = "login", required = true)String login,
-                           @RequestParam(value = "password", required = true)String password){
-
-
+    @Override
+    public String authUser(String login, String password) {
         return "login " + login + " password " + password;
     }
 
+    @Override
+    public String getUserList() {
+        return "some userList";
+    }
 
-    @GetMapping("/api/userlist")
-    public String getUserlist(){
-
-
-        return "some userlist";
+    @Override
+    public String getUser(String userId) {
+        return "userId " + userId;
     }
 
 
-    @GetMapping("/api/user")
-    public String getUser(@RequestParam(value = "userid", required = true)String userid){
 
 
-        return "userid " + userid;
-    }
+
 
 
 }
