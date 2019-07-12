@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 //adds start path for requests
 @RestController()
-@RequestMapping("/api")
+@RequestMapping("/api1")
 public class QuestionController {
 
     @GetMapping("/questions")
@@ -28,8 +28,8 @@ public class QuestionController {
     }
 
     @GetMapping("/results")
-    public TestClassResponse getResults(@RequestParam(name = "userId") Integer user_id){
+    public TemporaryClassResponse getResults(@RequestParam(name = "userId") Integer user_id){
 
-        return new TestClassResponse("Results of test for " + user_id);
+        return new TemporaryClassResponse("Results of test for " + user_id);
     }
 }
