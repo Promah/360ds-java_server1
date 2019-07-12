@@ -1,11 +1,11 @@
 package com.onseo.courses.ds.controllers;
 
 //class for tmp controller testing
-public class TestClassResponse {
+public class TemporaryClassResponse {
 
     private final String response;
 
-    public TestClassResponse(String response) {
+    public TemporaryClassResponse(String response) {
         this.response = response;
     }
 
