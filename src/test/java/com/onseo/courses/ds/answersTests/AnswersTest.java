@@ -6,27 +6,27 @@ public class AnswersTest {
 
 
     @Test
-    public void setTESTED_USER_ID() {
+    public void setTested_user_id() {
 
     }
 
     @Test
-    public void setQUESTION_ID() {
+    public void setQuestion_id() {
     }
 
     @Test
-    public void getTESTED_USER_ID() {
+    public void getTested_user_id() {
     }
 
     @Test
-    public void getQUESTION_ID() {
+    public void getQuestion_id() {
     }
 
     @Test
-    public void setANSWERS_IDS() {
+    public void setAnswers_ids() {
     }
 
     @Test
-    public void getANSWERS_IDS() {
+    public void getAnswers_ids() {
     }
 }
