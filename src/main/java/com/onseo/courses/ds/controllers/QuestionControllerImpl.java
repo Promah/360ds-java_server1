@@ -12,7 +12,7 @@ public class QuestionControllerImpl implements BaseQuestionController {
     }
 
     @Override
-    public String getAnswers(Integer user_id, Integer question_id, Integer[] answers_id) {
+    public String getAnswers(String user_id, String question_id, String answers_id) {
         return "answers";
     }
 
@@ -22,7 +22,7 @@ public class QuestionControllerImpl implements BaseQuestionController {
     }
 
     @Override
-    public TemporaryClassResponse getResults(Integer user_id) {
-        return new TemporaryClassResponse(user_id.toString());
+    public TemporaryClassResponse getResults(String user_id) {
+        return new TemporaryClassResponse(user_id);
     }
 }
