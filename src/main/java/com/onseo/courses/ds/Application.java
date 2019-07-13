@@ -1,5 +1,6 @@
 package com.onseo.courses.ds;
 
+import com.onseo.courses.ds.logger.Logging;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,9 +15,10 @@ public class Application {
 	private static void runApplication(String[] args){
 		try {
 			SpringApplication.run(Application.class, args);
+			Logging.getLogger().info("Application run");
 		}
 		catch (Exception ex){
-			System.err.println("Startup application error"+ ex.getStackTrace());
+			Logging.getLogger().error("Startup application error"+ ex.getStackTrace());
 		}
 	}
 }
