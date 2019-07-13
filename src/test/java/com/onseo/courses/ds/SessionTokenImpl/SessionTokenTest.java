@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class SessionTokenTest {
 
     @Test
-    public void createToken() {
+    public void createTokenTest() {
         try {
             String tempToken = SessionToken.createToken("000000001", 1L);
 
@@ -21,7 +21,7 @@ public class SessionTokenTest {
     }
 
     @Test
-    public void verifyToken() {
+    public void verifyTokenTest() {
         try {
             String tempToken = SessionToken.createToken("000000001", 1L);
             TokenInfo tokenInfo = (TokenInfo) SessionToken.verifyToken(tempToken);
