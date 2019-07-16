@@ -2,36 +2,36 @@ package com.onseo.courses.ds.answers;
 
 public class Answers {
 
-    private String tested_user_id;
-    private String question_id;
-    private String[] answers_ids;
+    private String testedUserId;
+    private String questionId;
+    private String[] answersIds;
 
     public Answers(){
 
     }
 
-    public void setTested_user_id(String id){
-        this.tested_user_id =  id;
+    public void setTestedUserId(String id){
+        this.testedUserId =  id;
     }
 
-    public void setQuestion_id(String id){
-        this.question_id = id;
+    public void setQuestionId(String id){
+        this.questionId = id;
     }
 
-    public void setAnswers_ids(String[] answers_ids){
-        this.answers_ids = answers_ids;
+    public void setAnswersIds(String[] answersIds){
+        this.answersIds = answersIds;
     }
 
-    public String getTested_user_id(){
-        return tested_user_id;
+    public String getTestedUserId(){
+        return testedUserId;
     }
 
-    public String getQuestion_id(){
-        return question_id;
+    public String getQuestionId(){
+        return questionId;
     }
 
-    public String[] getAnswers_ids(){
-        return answers_ids;
+    public String[] getAnswersIds(){
+        return answersIds;
     }
 
 }
