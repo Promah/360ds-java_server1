@@ -1,6 +1,7 @@
 package com.onseo.courses.ds.interfaces;
 
 import com.onseo.courses.ds.controllers.TemporaryClassResponse;
+import com.onseo.courses.ds.models.Questions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api")
 public interface BaseQuestionController {
 
-    @GetMapping("/questions")
-    public String getQuestions();
+    @PostMapping("/questions")
+    public Questions[] getQuestions();
 
-    @PostMapping("/answers")
-    public String getAnswers(@RequestParam(name = "usesId") String user_id,
-                             @RequestParam(name = "questionId") String question_id,
-                             @RequestParam(name = "answerIds") String answers_id
+    @GetMapping("/answers")
+    public TemporaryClassResponse getAnswers(@RequestParam(name = "userId") String userId,
+                             @RequestParam(name = "questionId") String questionId,
+                             @RequestParam(name = "answerIds") String answersId
     );
 
     @GetMapping("/summary")
-    public String getSummary();
+    public TemporaryClassResponse[] getSummary();
 
     @GetMapping("/results")
-    public TemporaryClassResponse getResults(@RequestParam(name = "userId") String user_id);
+    public TemporaryClassResponse[] getResults(@RequestParam(name = "userId") String userId);
 }

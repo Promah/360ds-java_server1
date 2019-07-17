@@ -1,4 +1,4 @@
-package com.onseo.courses.ds.usersorg;
+package com.onseo.courses.ds.entytyuser;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
