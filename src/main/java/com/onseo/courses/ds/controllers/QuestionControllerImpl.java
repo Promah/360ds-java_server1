@@ -2,21 +2,26 @@ package com.onseo.courses.ds.controllers;
 
 import com.onseo.courses.ds.interfaces.BaseQuestionController;
 import com.onseo.courses.ds.models.Questions;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class QuestionControllerImpl implements BaseQuestionController {
 
     @Override
-    public Questions[] getQuestions() {
+    public List<Questions> getQuestions() {
         int size = 5;
-        Questions[] questions = new Questions[size];
+        List<Questions> questions = new ArrayList<>();
         for (int i = 0; i < size; i++){
             Questions question = new Questions();
             question.setId(i + "");
             question.setTittle("title №" + i);
 
-            questions[i] = question;
+            questions.add(question);
         }
         return questions;
     }
@@ -27,21 +32,21 @@ public class QuestionControllerImpl implements BaseQuestionController {
     }
 
     @Override
-    public TemporaryClassResponse[] getSummary() {
+    public List<TemporaryClassResponse>  getSummary() {
         int size = 3;
-        TemporaryClassResponse[] results = new TemporaryClassResponse[size];
+        List<TemporaryClassResponse> summary = new ArrayList<>();
         for (int i = 0; i < size; i++){
-            results[i] = new TemporaryClassResponse("summary " + i);
+            summary.add(new TemporaryClassResponse("summary " + i));
         }
-        return results;
+        return summary;
     }
 
     @Override
-    public TemporaryClassResponse[] getResults(String userId) {
+    public List<TemporaryClassResponse>  getResults(String userId) {
         int size = 3;
-        TemporaryClassResponse[] results = new TemporaryClassResponse[size];
+        List<TemporaryClassResponse> results = new ArrayList<>();
         for (int i = 0; i < size; i++){
-            results[i] = new TemporaryClassResponse(userId + " " + i);
+            results.add(new TemporaryClassResponse(userId + " " + i));
         }
         return results;
     }

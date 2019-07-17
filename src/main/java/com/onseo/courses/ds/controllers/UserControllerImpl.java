@@ -28,6 +28,9 @@ public class UserControllerImpl implements BaseUserController {
         int userId = Integer.valueOf(uId);
         Long ttl = 360L;
         String token = "";
+        int activeQuizCount = 3;
+        int completeQuizCount = 5;
+
         JSONObject response = new JSONObject();
         try {
 
@@ -44,8 +47,8 @@ public class UserControllerImpl implements BaseUserController {
             userMap.put("role", user.getRole());
 
             Map statusMap = new HashMap();
-            statusMap.put("active_quiz_cnt", 3);
-            statusMap.put("complete_quiz_cnt", 5);
+            statusMap.put("active_quiz_cnt", activeQuizCount);
+            statusMap.put("complete_quiz_cnt", completeQuizCount);
 
 
             response.put("accessToken", token);
@@ -64,6 +67,9 @@ public class UserControllerImpl implements BaseUserController {
         String userId = "15";
         Long ttl = 360L;
         String token = "";
+        int activeQuizCount = 3;
+        int completeQuizCount = 5;
+
         JSONObject response = new JSONObject();
         try {
             token = createToken(userId, ttl);
@@ -78,8 +84,8 @@ public class UserControllerImpl implements BaseUserController {
             userMap.put("role", user.getRole());
 
             Map statusMap = new HashMap();
-            statusMap.put("active_quiz_cnt", 3);
-            statusMap.put("complete_quiz_cnt", 5);
+            statusMap.put("active_quiz_cnt", activeQuizCount);
+            statusMap.put("complete_quiz_cnt", completeQuizCount);
 
             response.put("accessToken", token);
             response.put("ttl", ttl);
@@ -95,10 +101,12 @@ public class UserControllerImpl implements BaseUserController {
     @Override
     public String getStatus() {
         JSONObject response = new JSONObject();
+        int activeQuizCount = 3;
+        int completeQuizCount = 5;
         try {
             Map statusMap = new HashMap();
-            statusMap.put("active_quiz_cnt", 3);
-            statusMap.put("complete_quiz_cnt", 5);
+            statusMap.put("active_quiz_cnt", activeQuizCount);
+            statusMap.put("complete_quiz_cnt", completeQuizCount);
 
             response.put("status", statusMap);
         } catch (Exception e) {

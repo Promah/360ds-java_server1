@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @RequestMapping("/api")
 public interface BaseQuestionController {
 
     @PostMapping("/questions")
-    public Questions[] getQuestions();
+    public List<Questions> getQuestions();
 
     @GetMapping("/answers")
     public TemporaryClassResponse getAnswers(@RequestParam(name = "userId") String userId,
@@ -20,8 +22,8 @@ public interface BaseQuestionController {
     );
 
     @GetMapping("/summary")
-    public TemporaryClassResponse[] getSummary();
+    public List<TemporaryClassResponse> getSummary();
 
     @GetMapping("/results")
-    public TemporaryClassResponse[] getResults(@RequestParam(name = "userId") String userId);
+    public List<TemporaryClassResponse> getResults(@RequestParam(name = "userId") String userId);
 }

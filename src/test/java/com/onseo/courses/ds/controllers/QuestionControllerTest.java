@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -36,8 +37,8 @@ public class QuestionControllerTest extends AbstractJsonHandler {
         assertEquals(200, status);
 
         String content = result.getResponse().getContentAsString();
-        Questions[] questions = super.mapFromJson(content, Questions[].class);
-        assertTrue(questions.length > 0);
+        List<Questions> responseList = super.mapFromJson(content, List.class);
+        assertTrue(responseList.size() > 0);
     }
 
     @Test
@@ -78,8 +79,8 @@ public class QuestionControllerTest extends AbstractJsonHandler {
         assertEquals(200, status);
 
         String content = result.getResponse().getContentAsString();
-        TemporaryClassResponse[] questions = super.mapFromJson(content, TemporaryClassResponse[].class);
-        assertTrue(questions.length > 0);
+        List<TemporaryClassResponse> responseList = super.mapFromJson(content, List.class);
+        assertTrue(responseList.size() > 0);
     }
 
     @Test
@@ -98,13 +99,14 @@ public class QuestionControllerTest extends AbstractJsonHandler {
         assertEquals(200, status);
 
         String content = result.getResponse().getContentAsString();
-        TemporaryClassResponse[] responses = super.mapFromJson(content, TemporaryClassResponse[].class);
-        assertTrue(responses.length > 0);
+        List<TemporaryClassResponse> responseList = super.mapFromJson(content, List.class);
+        System.out.println(responseList.size());
+        assertTrue(responseList.size() > 0);
 
-        System.out.println("length " + responses.length);
-        for (TemporaryClassResponse response : responses){
-            System.out.println(response.getResponse());
-        }
+//        System.out.println("length " + responses.length);
+//        for (TemporaryClassResponse response : responses){
+//            System.out.println(response.getResponse());
+//        }
 
 
     }
