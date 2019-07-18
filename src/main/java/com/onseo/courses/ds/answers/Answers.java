@@ -1,10 +1,12 @@
 package com.onseo.courses.ds.answers;
 
+import java.util.List;
+
 public class Answers {
 
     private String testedUserId;
     private String questionId;
-    private String[] answersIds;
+    private List<String> answersIds;
 
     public Answers(){
 
@@ -18,7 +20,7 @@ public class Answers {
         this.questionId = id;
     }
 
-    public void setAnswersIds(String[] answersIds){
+    public void setAnswersIds(List<String> answersIds){
         this.answersIds = answersIds;
     }
 
@@ -30,7 +32,7 @@ public class Answers {
         return questionId;
     }
 
-    public String[] getAnswersIds(){
+    public List<String> getAnswersIds(){
         return answersIds;
     }
 
