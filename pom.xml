@@ -42,7 +42,7 @@
 			<version>2.4.0</version>
 		</dependency>
     
-    	<dependency>
+    <dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
@@ -53,12 +53,23 @@
 			<artifactId>jsontoken</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
-    	<dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+		</dependency>
+
+    <dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
