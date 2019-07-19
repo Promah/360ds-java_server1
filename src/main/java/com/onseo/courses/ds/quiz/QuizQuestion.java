@@ -1,6 +1,6 @@
 package com.onseo.courses.ds.quiz;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 public class QuizQuestion {
     private String questionId;
