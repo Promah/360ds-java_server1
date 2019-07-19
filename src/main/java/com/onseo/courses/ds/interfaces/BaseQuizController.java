@@ -1,5 +1,6 @@
 package com.onseo.courses.ds.interfaces;
 
+import com.onseo.courses.ds.controllers.QuizOpenResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,6 @@ public interface BaseQuizController {
     @GetMapping("/list")
     public void getQuizList();
 
-    @GetMapping("/open/${quizAssignmentID}")
-    public void getQuiz(@PathVariable String quizAssignmentId);
+    @GetMapping("open/{quizAssignmentID}")
+    QuizOpenResponse getOpenQuiz(@PathVariable String quizAssignmentID);
 }
