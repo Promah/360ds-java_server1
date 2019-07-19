@@ -15,6 +15,7 @@ public class User {
     private boolean active;
     private String role;
 
+
     @JsonCreator
     public User(@JsonProperty("id") String id, @JsonProperty("name")String name,
                 @JsonProperty("email") String email, @JsonProperty("chiefId") String chiefId,
