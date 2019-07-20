@@ -5,7 +5,7 @@ import java.util.List;
 public class QuizQuestion {
     private String questionId;
     private String text;
-    private String questionKind;
+    private QuizQuestionKind questionKind;
     private static final int SIMULATE_ANSWER_CNT = 4;
     private List<QuizAnswerOption> answerOptions;
 
@@ -25,11 +25,11 @@ public class QuizQuestion {
         this.text = text;
     }
 
-    public String getQuestionKind() {
+    public QuizQuestionKind getQuestionKind() {
         return questionKind;
     }
 
-    public void setQuestionKind(String questionKind) {
+    public void setQuestionKind(QuizQuestionKind questionKind) {
         this.questionKind = questionKind;
     }
 
