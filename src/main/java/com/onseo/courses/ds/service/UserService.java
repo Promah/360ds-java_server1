@@ -1,6 +1,6 @@
 package com.onseo.courses.ds.service;
 
-import com.onseo.courses.ds.entytyuser.User;
+import com.onseo.courses.ds.entityuser.User;
 
 import java.util.List;
 import java.util.Optional;

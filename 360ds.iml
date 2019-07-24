@@ -25,6 +25,27 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.jsontoken:jsontoken:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.11" level="project" />
+    <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
+    <orderEntry type="library" name="Maven: joda-time:joda-time:2.10.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.11" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb-reactive:2.1.7.BUILD-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-mongodb:2.1.9.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.1.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.1.9.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver:3.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:bson:3.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:3.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-async:3.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-reactivestreams:1.9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: io.projectreactor:reactor-core:3.2.10.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:2.1.7.BUILD-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.1.8.RELEASE" level="project" />
