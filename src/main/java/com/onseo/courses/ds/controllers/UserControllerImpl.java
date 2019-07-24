@@ -3,7 +3,7 @@ package com.onseo.courses.ds.controllers;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onseo.courses.ds.entytyuser.User;
+import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.BaseUserController;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
