@@ -7,7 +7,7 @@ public class Quiz {
     private String quizTitle;
     private String quizDescription;
     private String quizAssignmentID;
-    private List<String> questions;
+    private List<QuizQuestion> questions;
 
     public String getQuizID() {
         return quizID;
@@ -41,11 +41,11 @@ public class Quiz {
         this.quizAssignmentID = quizAssignmentID;
     }
 
-    public List<String> getQuestions() {
+    public List<QuizQuestion> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<String> questions) {
+    public void setQuestions(List<QuizQuestion> questions) {
         this.questions = questions;
     }
 }
