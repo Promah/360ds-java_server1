@@ -1,17 +1,7 @@
 [
   {
-    "errorCode": -1,
-    "errorMessage": "e.g. exception open",
-    "data": "RESPONSE_OPEN_Valid"
-  },
-  {
     "errorCode": 0,
-    "errorMessage": "e.g. exception closed",
+    "errorMessage": "",
     "data": "RESPONSE_CLOSED_Valid"
-  },
-  {
-    "errorCode": 1,
-    "errorMessage": "e.g. exception results",
-    "data": "RESPONSE_RESULTS_Valid"
   }
 ]
