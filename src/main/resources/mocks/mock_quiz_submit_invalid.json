@@ -2,16 +2,16 @@
   {
     "errorCode": -1,
     "errorMessage": "e.g. exception open",
-    "data": "RESPONSE_OPEN"
+    "data": "RESPONSE_OPEN_Invalid"
   },
   {
     "errorCode": 0,
     "errorMessage": "e.g. exception closed",
-    "data": "RESPONSE_CLOSED"
+    "data": "RESPONSE_CLOSED_Invalid"
   },
   {
     "errorCode": 1,
     "errorMessage": "e.g. exception results",
-    "data": "RESPONSE_RESULTS"
+    "data": "RESPONSE_RESULTS_Invalid"
   }
 ]
