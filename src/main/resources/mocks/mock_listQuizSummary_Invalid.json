@@ -1,22 +1,5 @@
 {
   "errorCode": -101,
   "errorMessage": "invalid accessToken",
-  "data": [
-    {
-      "quizId": "85458",
-      "quizTitle": "About Olia",
-      "quizAssignmentId": "13",
-      "quizPersonAnswered": 1,
-      "quizPersonTotal": 8,
-      "quizStatus": "open"
-    },
-    {
-      "quizId": "65845",
-      "quizTitle": "About Anna",
-      "quizAssignmentId": "14",
-      "quizPersonAnswered": 2,
-      "quizPersonTotal": 8,
-      "quizStatus": "open"
-    }
-  ]
+  "data": ""
 }
