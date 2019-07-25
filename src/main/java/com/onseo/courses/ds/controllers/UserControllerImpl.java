@@ -40,11 +40,11 @@ public class UserControllerImpl implements BaseUserController {
             token = createToken(uId, ttl);
             Map userMap = new HashMap();
             userMap.put("id", user.getId());
-            userMap.put("name", user.getName());
-            userMap.put("email", user.getEmail());
-            userMap.put("chiefId", user.getChiefId());
-            userMap.put("active", user.isActive());
-            userMap.put("role", user.getRole());
+//            userMap.put("name", user.getName());
+//            userMap.put("email", user.getEmail());
+//            userMap.put("chiefId", user.getChiefId());
+//            userMap.put("active", user.isActive());
+//            userMap.put("role", user.getRole());
 
             Map statusMap = new HashMap();
             statusMap.put("active_quiz_cnt", activeQuizCount);
@@ -77,11 +77,11 @@ public class UserControllerImpl implements BaseUserController {
             User user = getValueFromFile(Integer.valueOf(userId));
             Map userMap = new HashMap();
             userMap.put("id", user.getId());
-            userMap.put("name", user.getName());
-            userMap.put("email", user.getEmail());
-            userMap.put("chiefId", user.getChiefId());
-            userMap.put("active", user.isActive());
-            userMap.put("role", user.getRole());
+//            userMap.put("name", user.getName());
+//            userMap.put("email", user.getEmail());
+//            userMap.put("chiefId", user.getChiefId());
+//            userMap.put("active", user.isActive());
+//            userMap.put("role", user.getRole());
 
             Map statusMap = new HashMap();
             statusMap.put("active_quiz_cnt", activeQuizCount);

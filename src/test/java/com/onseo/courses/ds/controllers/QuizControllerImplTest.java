@@ -22,6 +22,15 @@ public class QuizControllerImplTest {
     private MockMvc mvc;
 
     @Test
+    public void getQuizListTest() throws Exception {
+        mvc.perform( MockMvcRequestBuilders
+                .get("/api/quiz/list")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void getOpenQuizTest() throws Exception {
         mvc.perform( MockMvcRequestBuilders
                 .get("/api/quiz/open/{quizAssignmentID}", "assignment_ID")

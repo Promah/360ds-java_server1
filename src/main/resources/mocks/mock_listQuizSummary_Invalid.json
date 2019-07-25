@@ -1,20 +1,16 @@
-[
-  {
-    "errorCode": -101,
-    "errorMessage": "invalid accessToken",
-    "data": {
+{
+  "errorCode": -101,
+  "errorMessage": "invalid accessToken",
+  "data": [
+    {
       "quizId": "85458",
       "quizTitle": "About Olia",
       "quizAssignmentId": "13",
       "quizPersonAnswered": 1,
       "quizPersonTotal": 8,
       "quizStatus": "open"
-    }
-  },
-  {
-    "errorCode": -101,
-    "errorMessage": "invalid accessToken",
-    "data": {
+    },
+    {
       "quizId": "65845",
       "quizTitle": "About Anna",
       "quizAssignmentId": "14",
@@ -22,5 +18,5 @@
       "quizPersonTotal": 8,
       "quizStatus": "open"
     }
-  }
-]
+  ]
+}
