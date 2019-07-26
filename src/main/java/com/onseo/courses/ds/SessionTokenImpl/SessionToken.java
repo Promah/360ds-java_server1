@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import java.security.InvalidKeyException;
 import java.security.SignatureException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class    SessionToken implements SessionTokenInterface {
@@ -28,16 +29,21 @@ public class    SessionToken implements SessionTokenInterface {
 
     private static final String SIGNING_KEY = "LongAndHardToGuessValueWithSpecialCharacters@^($%*$%";
 
+    private static JsonToken token;
+
     public static String createToken(String userId, Long durationTime) throws SignatureException, InvalidKeyException {
         Calendar calendar = Calendar.getInstance();
         HmacSHA256Signer signer = null;
 
         signer = new HmacSHA256Signer(ISSUER, null, SIGNING_KEY.getBytes());
 
-        JsonToken token = new JsonToken(signer);
+        //was local variable
+        token = new JsonToken(signer);
+        
         token.setAudience(AUDIENCE);
         token.setIssuedAt(new Instant(calendar.getTimeInMillis()));
-        token.setExpiration(new Instant(calendar.getTimeInMillis() + 1000L*60L*durationTime));
+        token.setExpiration(new Instant(calendar.getTimeInMillis() + 1000L*durationTime));
+        System.out.println("exp time " + new Date(calendar.getTimeInMillis() + 1000L*durationTime));
 
         JsonObject request = new JsonObject();
         request.addProperty("userId", userId);
@@ -74,6 +80,7 @@ public class    SessionToken implements SessionTokenInterface {
         JsonToken jsonToken;
 
         jsonToken = parser.verifyAndDeserialize(token);
+        System.out.println("from verif " + jsonToken.getExpiration().getMillis());
 
         JsonObject payload = jsonToken.getPayloadAsJsonObject();
 
@@ -89,6 +96,25 @@ public class    SessionToken implements SessionTokenInterface {
         }else{
             return null;
         }
+    }
+
+    public static void updateExpireTime(Long newDurationTime){
+        Calendar calendar = Calendar.getInstance();
+        if (newDurationTime > 0){
+            token.setExpiration(new Instant(calendar.getTimeInMillis() + 1000L * newDurationTime));
+            System.out.println("exp time " + new Date(calendar.getTimeInMillis() + 1000L*newDurationTime));
+        } else{
+            //log
+            System.out.println("Wrong value of token duration time");
+        }
+    }
+
+    public static boolean isValid(String receivedToken) throws SignatureException{
+        return token.serializeAndSign().equals(receivedToken);
+    }
+
+    public static boolean isExpired(){
+        return new DateTime().isAfter(token.getExpiration().getMillis());
     }
 
 }
