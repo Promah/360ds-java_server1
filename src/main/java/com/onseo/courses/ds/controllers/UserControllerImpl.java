@@ -40,6 +40,7 @@ public class UserControllerImpl implements BaseUserController {
         Map responseData = new LinkedHashMap();
         try {
             List<User> userList = getUserListFromFile();
+
             if (selectedId < userList.size()) {
                 User user = userList.get(selectedId - 1);
 
@@ -84,7 +85,6 @@ public class UserControllerImpl implements BaseUserController {
     public String restoreSession(String token) {
         int activeQuizCount = 3;
         int completeQuizCount = 5;
-
         int errorCode = -1;
         String errorMessage = "";
 
