@@ -1,5 +1,9 @@
 package com.onseo.courses.ds.quiz;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.onseo.courses.ds.controllers.QuizAnswerOptionControllerImpl;
+
 import java.util.List;
 
 public class QuizQuestion {
@@ -8,6 +12,15 @@ public class QuizQuestion {
     private QuizQuestionKind questionKind;
     private int simulateAnswerCnt;
     private List<QuizAnswerOption> answerOptions;
+
+    @JsonCreator
+    public QuizQuestion(@JsonProperty("questionId") String questionId, @JsonProperty("text") String text,
+                        @JsonProperty("questionKind") QuizQuestionKind quizQuestionKind){
+        this.questionId = questionId;
+        this.text = text;
+        this.questionKind = quizQuestionKind;
+        answerOptions = new QuizAnswerOptionControllerImpl().getQuizAnswers();
+    }
 
     public String getQuestionId() {
         return questionId;

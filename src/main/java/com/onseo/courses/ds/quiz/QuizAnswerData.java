@@ -1,5 +1,8 @@
 package com.onseo.courses.ds.quiz;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class QuizAnswerData {
@@ -7,7 +10,14 @@ public class QuizAnswerData {
     private List<String> answerItems;
     private String answerData;
 
-    public QuizAnswerData() {
+    @JsonCreator
+    public QuizAnswerData(@JsonProperty("questionId")String questionId,
+                          @JsonProperty("answerItems") List<String> answerItems,
+                          @JsonProperty("answerData")String answerData)
+    {
+        this.questionId = questionId;
+        this.answerItems = answerItems;
+        this.answerData = answerData;
     }
 
     public String getQuestionId() {

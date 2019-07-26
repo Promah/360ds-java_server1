@@ -1,12 +1,19 @@
 package com.onseo.courses.ds.quiz;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.onseo.courses.ds.controllers.QuizAnswerDataController;
+
 import java.util.List;
 
 public class QuizResponse {
     private String responserProfile;
     private List<QuizAnswerData> answers;
 
-    public QuizResponse() {
+    @JsonCreator
+    public QuizResponse(@JsonProperty("responserProfile") String responserProfile) {
+        this.responserProfile = responserProfile;
+        answers = new QuizAnswerDataController().getQuizAnswerData();
     }
 
     public String getResponserProfile() {

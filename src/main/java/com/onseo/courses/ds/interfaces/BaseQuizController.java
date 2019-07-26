@@ -18,6 +18,6 @@ public interface BaseQuizController {
     @GetMapping("/list")
     ResponseContainer<List<QuizSummary>> getQuizList() throws IOException;
 
-    @GetMapping("open/{quizAssignmentID}")
+    @GetMapping("/open/{quizAssignmentID}")
     QuizOpenResponse getOpenQuiz(@PathVariable String quizAssignmentID);
 }

@@ -1,5 +1,8 @@
 package com.onseo.courses.ds.quiz.quizSummary;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class QuizSummary {
 
     private String quizId;
@@ -9,6 +12,22 @@ public class QuizSummary {
     private int quizPersonAnswered;
     private int quizPersonTotal;
     private QuizStatus quizStatus;
+
+    @JsonCreator
+    public QuizSummary(@JsonProperty("quizId")String quizId,
+                       @JsonProperty("quizTitle") String quizTitle,
+                       @JsonProperty("quizAssignmentId") String quizAssignmentId,
+                       @JsonProperty("quizPersonAnswered") String quizPersonAnswered,
+                       @JsonProperty("quizPersonTotal") String quizPersonTotal,
+                       @JsonProperty("quizStatus") QuizStatus quizStatus)
+    {
+        this.quizId = quizId;
+        this.quizTitle = quizTitle;
+        this.quizAssignmentId = quizAssignmentId;
+        this.quizPersonAnswered = Integer.valueOf(quizPersonAnswered);
+        this.quizPersonTotal = Integer.valueOf(quizPersonTotal);
+        this.quizStatus = quizStatus;
+    }
 
     public void setQuizAssignmentId(String quizAssignmentId) {
         this.quizAssignmentId = quizAssignmentId;

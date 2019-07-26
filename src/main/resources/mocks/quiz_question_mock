@@ -1,0 +1,17 @@
+[
+  {
+    "questionId": 1,
+    "text": "What is the capital of Denmark?",
+    "questionKind": "text"
+  },
+  {
+    "questionId": 2,
+    "text": "How Monaco citizens are called?",
+    "questionKind": "text"
+  },
+  {
+    "questionId": 3,
+    "text": "Who is the president of New Zealand",
+    "questionKind": "text"
+  }
+]

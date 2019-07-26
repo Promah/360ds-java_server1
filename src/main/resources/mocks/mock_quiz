@@ -1,0 +1,20 @@
+[
+  {
+    "quizID": 2,
+    "quizTitle": "Work conditions",
+    "quizDescription": "Work conditions ranking",
+    "quizAssignmentID": 2
+  },
+  {
+    "quizID": 3,
+    "quizTitle": "Place for summer party",
+    "quizDescription": "Choosing place for summer party 2020",
+    "quizAssignmentID": 3
+  },
+  {
+    "quizID": 1,
+    "quizTitle": "partyQuiz",
+    "quizDescription": "NY party ranking",
+    "quizAssignmentID": 1
+  }
+]
