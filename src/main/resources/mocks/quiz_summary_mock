@@ -1,0 +1,26 @@
+[
+  {
+    "quizId": 1,
+    "quizTitle": "Work conditions",
+    "quizAssignmentId": "1",
+    "quizPersonAnswered": "2",
+    "quizPersonTotal": "10",
+    "quizStatus": "open"
+  },
+  {
+    "quizId": 2,
+    "quizTitle": "Work conditions",
+    "quizAssignmentId": "2",
+    "quizPersonAnswered": "2",
+    "quizPersonTotal": "10",
+    "quizStatus": "open"
+  },
+  {
+    "quizId": 3,
+    "quizTitle": "Work conditions",
+    "quizAssignmentId": "3",
+    "quizPersonAnswered": "4",
+    "quizPersonTotal": "10",
+    "quizStatus": "open"
+  }
+]
