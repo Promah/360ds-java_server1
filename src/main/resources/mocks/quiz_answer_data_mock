@@ -1,0 +1,29 @@
+[
+  {
+    "questionId": 1,
+    "answerItems":
+    ["YES",
+      "NO",
+      "NOT SURE"
+    ],
+    "answerData": "SomeAnswerData1"
+  },
+  {
+    "questionId": 2,
+    "answerItems":
+    ["YES",
+      "NO",
+      "NOT SURE"
+    ],
+    "answerData": "SomeAnswerData2"
+  },
+  {
+    "questionId": 2,
+    "answerItems":
+    ["YES",
+      "NO",
+      "NOT SURE"
+    ],
+    "answerData": "SomeAnswerData3"
+  }
+]
