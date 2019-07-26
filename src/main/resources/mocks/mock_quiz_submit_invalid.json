@@ -1,0 +1,17 @@
+[
+  {
+    "errorCode": 100,
+    "errorMessage": "invalid credential",
+    "data": ""
+  },
+  {
+    "errorCode": 101,
+    "errorMessage": "invalid accessToken",
+    "data": ""
+  },
+  {
+    "errorCode": 102,
+    "errorMessage": "invalid request",
+    "data": ""
+  }
+]

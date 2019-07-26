@@ -10,7 +10,7 @@ public class QuizQuestion {
     private String questionId;
     private String text;
     private QuizQuestionKind questionKind;
-    private static final int SIMULATE_ANSWER_CNT = 4;
+    private int simulateAnswerCnt;
     private List<QuizAnswerOption> answerOptions;
 
     @JsonCreator
@@ -46,8 +46,12 @@ public class QuizQuestion {
         this.questionKind = questionKind;
     }
 
-    public static int getSimulateAnswerCnt() {
-        return SIMULATE_ANSWER_CNT;
+    public int getSimulateAnswerCnt() {
+        return simulateAnswerCnt;
+    }
+
+    public void setSimulateAnswerCnt(int simulateAnswerCnt) {
+        this.simulateAnswerCnt = simulateAnswerCnt;
     }
 
     public List<QuizAnswerOption> getAnswerOptions() {
