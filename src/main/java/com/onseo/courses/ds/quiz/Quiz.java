@@ -2,6 +2,7 @@ package com.onseo.courses.ds.quiz;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.onseo.courses.ds.controllers.QuizQuestionController;
 
 import java.util.List;
 
@@ -12,16 +13,14 @@ public class Quiz {
     private String quizAssignmentID;
     private List<QuizQuestion> questions;
 
-
     @JsonCreator
     public Quiz(@JsonProperty("quizID") String quizID, @JsonProperty("quizTitle")String quizTitle,
-                @JsonProperty("quizDescription") String quizDescription, @JsonProperty("quizAssignmentID") String quizAssignmentID,
-                @JsonProperty("questions") List<QuizQuestion> questions) {
+                @JsonProperty("quizDescription") String quizDescription, @JsonProperty("quizAssignmentID") String quizAssignmentID) {
         this.quizID = quizID;
         this.quizTitle = quizTitle;
         this.quizDescription = quizDescription;
         this.quizAssignmentID = quizAssignmentID;
-        this.questions = questions;
+        this.questions = new QuizQuestionController().getQuizQuestions();
     }
 
     public String getQuizID() {

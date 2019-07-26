@@ -1,0 +1,14 @@
+[
+  {
+    "answerId": "1",
+    "text": "Yes"
+  },
+  {
+    "answerId": "2",
+    "text": "No"
+  },
+  {
+    "answerId": "3",
+    "text": "Not sure"
+  }
+]

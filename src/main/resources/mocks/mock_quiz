@@ -3,35 +3,18 @@
     "quizID": 2,
     "quizTitle": "Work conditions",
     "quizDescription": "Work conditions ranking",
-    "quizAssignmentID": 2,
-    "questions":
-    ["Please rank the office from 1 to 5",
-      "What should be changed in office interior?",
-      "What should be changed regarding office furniture?"
-    ]
+    "quizAssignmentID": 2
   },
   {
     "quizID": 3,
     "quizTitle": "Place for summer party",
     "quizDescription": "Choosing place for summer party 2020",
-    "quizAssignmentID": 3,
-    "questions":
-    ["Do you have some exact places in mind?",
-      "Should we go to some lake?",
-      "Should we go to the sea?",
-      "Should this party be standalone party or with somebody else?",
-      "Should we make hi-tech camp with some live music in the mountains for several days?"
-    ]
+    "quizAssignmentID": 3
   },
   {
     "quizID": 1,
     "quizTitle": "partyQuiz",
     "quizDescription": "NY party ranking",
-    "quizAssignmentID": 1,
-    "questions":
-    ["Please rank the party from 1 to 5",
-      "What was good for your opinion?",
-      "What was not so good?"
-    ]
+    "quizAssignmentID": 1
   }
 ]
