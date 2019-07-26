@@ -1,7 +1,6 @@
 package com.onseo.courses.ds.entityuser;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 public class User {
     private String id;
@@ -17,15 +16,22 @@ public class User {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    public void setLastdName(String secondName) {
+    public void setLastName(String secondName) {
         this.lastName = secondName;
     }
-    public void setAvatarUrl(String photo) throws IOException {this.avatar_url = ""+photo;    }
-    public void setSubordinatesIds(List<String> subordinatesIds) {
-        this.subordinates_id = subordinatesIds;
+
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
-    public void setManagerIds(List<String> managerIds) {
-        this.manager_id = managerIds;
+
+    //    public void setAvatarUrl(String photo) {this.avatar_url = ""+photo;    }
+
+    public void setSubordinates_id(List<String> subordinates_id) {
+        this.subordinates_id = subordinates_id;
+    }
+
+    public void setManager_id(List<String> manager_id) {
+        this.manager_id = manager_id;
     }
 
     public String getId() {

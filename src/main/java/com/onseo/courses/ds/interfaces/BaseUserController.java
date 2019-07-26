@@ -10,18 +10,15 @@ public interface BaseUserController {
     public String authUser(@RequestParam(value = "uId")String uId,
                            @RequestParam(value = "password")String password);
 
-
-
     @PostMapping("/restore_session")
-    public String restoreSession();
+    public String restoreSession(@RequestHeader(name = "access_token") String token);
 
     @GetMapping("/status")
-    public String getStatus();
+    public String getStatus(@RequestHeader(name = "access_token") String token);
 
 
     @GetMapping("/userlist")
     public String getUserList();
-
 
     @GetMapping("/user")
     public String getUser(@RequestParam(value = "userId")String userId);
