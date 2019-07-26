@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onseo.courses.ds.interfaces.BaseQuizController;
 import com.onseo.courses.ds.quiz.Quiz;
+import com.onseo.courses.ds.quiz.QuizResponse;
+import com.onseo.courses.ds.quiz.quizSummary.QuizSummary;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,6 +19,9 @@ import java.util.List;
 
 @RestController
 public class QuizControllerImpl implements BaseQuizController {
+
+    private List<QuizSummary> summary;
+    private List<QuizResponse> answers;
 
     @Override
     public void getQuizList() {
@@ -34,9 +39,10 @@ public class QuizControllerImpl implements BaseQuizController {
             e.printStackTrace();
         }
 
-        System.out.println(Integer.valueOf(quizAssignmentID));
-        Quiz quiz = userList.get(Integer.valueOf(quizAssignmentID));
-        return new QuizOpenResponse(quiz);
+        summary = new QuizSummaryController().getQuizSummaries();
+        //Quiz quiz = userList.get(Integer.valueOf(quizAssignmentID));
+        answers = new QuizResponseController().getQuizAnswerData();
+        return new QuizOpenResponse(summary, userList, answers);
     }
 
     private List<Quiz> getQuizListFromFile() throws Exception{

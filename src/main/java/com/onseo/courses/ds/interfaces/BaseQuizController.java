@@ -13,6 +13,6 @@ public interface BaseQuizController {
     @GetMapping("/list")
     public void getQuizList();
 
-    @GetMapping("open/{quizAssignmentID}")
+    @GetMapping("/open/{quizAssignmentID}")
     QuizOpenResponse getOpenQuiz(@PathVariable String quizAssignmentID);
 }
