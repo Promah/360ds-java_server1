@@ -1,0 +1,8 @@
+{
+  "errorCode": 0,
+  "errorMessage": "",
+  "data": {
+    "active_quiz_cnt": 3,
+    "complete_quiz_cnt": 10
+  }
+}
