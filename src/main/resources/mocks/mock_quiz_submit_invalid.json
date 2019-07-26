@@ -1,12 +1,17 @@
 [
   {
-    "errorCode": -1,
-    "errorMessage": "e.g. exception open",
-    "data": "RESPONSE_OPEN_Invalid"
+    "errorCode": 100,
+    "errorMessage": "invalid credential",
+    "data": ""
   },
   {
-    "errorCode": 1,
-    "errorMessage": "e.g. exception results",
-    "data": "RESPONSE_RESULTS_Invalid"
+    "errorCode": 101,
+    "errorMessage": "invalid accessToken",
+    "data": ""
+  },
+  {
+    "errorCode": 102,
+    "errorMessage": "invalid request",
+    "data": ""
   }
 ]
