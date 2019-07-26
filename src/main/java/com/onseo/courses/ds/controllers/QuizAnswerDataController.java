@@ -3,6 +3,7 @@ package com.onseo.courses.ds.controllers;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onseo.courses.ds.logger.Logging;
 import com.onseo.courses.ds.quiz.QuizAnswerData;
 import com.onseo.courses.ds.quiz.QuizQuestion;
 import org.json.simple.JSONArray;
@@ -18,16 +19,16 @@ public class QuizAnswerDataController {
 
     public List<QuizAnswerData> getQuizAnswerData(){
 
-        List<QuizAnswerData> quizAnswerOptions = null;
+        List<QuizAnswerData> quizAnswerDataList = null;
 
         try {
-            quizAnswerOptions = getAnswersListFromFile();
+            quizAnswerDataList = getAnswersListFromFile();
         }
         catch (Exception e){
-            e.printStackTrace();
+            Logging.getLogger().trace("Error in quizAnswerDataList deserialization process in method getQuizAnswerData()");
         }
 
-        return quizAnswerOptions;
+        return quizAnswerDataList;
     }
 
     private List<QuizAnswerData> getAnswersListFromFile() throws Exception{
@@ -40,11 +41,11 @@ public class QuizAnswerDataController {
         return list;
     }
 
-    protected <T> T mapFromJson(String json, Class<T> clazz)
+    protected <T> T mapFromJson(String json, Class<T> tClass)
             throws JsonParseException, JsonMappingException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(json, clazz);
+        return objectMapper.readValue(json, tClass);
     }
 
 }
