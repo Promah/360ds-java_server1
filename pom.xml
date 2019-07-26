@@ -53,18 +53,28 @@
 			<artifactId>jsontoken</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+		</dependency>
+
     <dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.google.cloud.tools/appengine-maven-plugin -->
 		<dependency>
-			<groupId>com.google.cloud.tools</groupId>
-			<artifactId>appengine-maven-plugin</artifactId>
-			<version>2.0.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 
 
