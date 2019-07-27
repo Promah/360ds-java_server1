@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
+import com.onseo.courses.ds.SessionTokenImpl.TokenInfo;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.BaseUserController;
+import com.onseo.courses.ds.logger.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileReader;
@@ -21,12 +22,11 @@ import static com.onseo.courses.ds.SessionTokenImpl.SessionToken.createToken;
 @RestController
 public class UserControllerImpl implements BaseUserController {
 
-    private Long ttl = 20L;
-    private Integer selectedId;
+    private Long ttl = 30L;
 
     @Override
     public String authUser(String uId, String password) {
-        selectedId = Integer.valueOf(uId);
+        Integer selectedId = Integer.valueOf(uId);
         System.out.println("uid " + uId + " int " + selectedId);
         String token = "";
 
@@ -35,13 +35,9 @@ public class UserControllerImpl implements BaseUserController {
         int errorCode = -1;
         String errorMessage = "";
 
-        Map userMap = new LinkedHashMap();
-        Map statusMap = new LinkedHashMap();
-        Map responseData = new LinkedHashMap();
+        Map<String, Object> responseData = new LinkedHashMap<>();
         try {
             List<User> userList = getUserListFromFile();
-
-
 
             if (selectedId < userList.size()) {
                 User user = userList.get(selectedId - 1);
@@ -49,33 +45,24 @@ public class UserControllerImpl implements BaseUserController {
                 token = createToken(uId, ttl);
 
                 if (user != null) {
-                    userMap.put("id", user.getId());
-                    userMap.put("first_name", user.getFirstName());
-                    userMap.put("last_name", user.getLastdName());
-                    userMap.put("avatar_url", user.getAvatarUrl());
-
-                    statusMap.put("active_quiz_cnt", activeQuizCount);
-                    statusMap.put("complete_quiz_cnt", completeQuizCount);
-
-                    responseData.put("access_token", token);
-                    responseData.put("ttl", ttl);
-                    responseData.put("profile", userMap);
-                    responseData.put("status", statusMap);
+                    responseData = fillResponseData(token, ttl, fillUserData(user), fillStatusData(activeQuizCount, completeQuizCount));
                     errorCode = 0;
 
                 } else {
                     errorCode = -100;
                     errorMessage = "Invalid credentials";
+                    Logging.getLogger().warn("Error in authUser: user instance equal to null");
                 }
             } else {
                 errorCode = -100;
                 errorMessage = "Invalid credentials";
+                Logging.getLogger().warn("Error in authUser: wrong id = " + selectedId);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorCode = -100;
-            errorMessage = "Invalid credentials";
-
+            errorCode = -102;
+            errorMessage = "Invalid request";
+            Logging.getLogger().error("Error in authUser: invalid request with id = "+ uId + ", password = " + password);
         }
 
         JSONObject response = new JSONObject(createResponseContainer(errorCode, errorMessage, responseData));
@@ -92,48 +79,32 @@ public class UserControllerImpl implements BaseUserController {
         int errorCode = -1;
         String errorMessage = "";
 
-        Map userMap = new LinkedHashMap();
-        Map statusMap = new LinkedHashMap();
-        Map responseData = new LinkedHashMap();
-        if (selectedId != null) {
-            try {
-                if (SessionToken.isValid(token)) {
-                    if (SessionToken.isExpired()) {
-//                      throw new TokenExpiredException("Token time is expired. Please authorise again.");
-                        errorCode = -101;
-                        errorMessage = "Invalid accessToken: token time is expired";
-                    } else {
-                        SessionToken.updateExpireTime(ttl);
-                        User user = getValueFromFile(selectedId);
+        Map<String, Object> responseData = new LinkedHashMap<>();
 
-                        userMap.put("id", user.getId());
-                        userMap.put("first_name", user.getFirstName());
-                        userMap.put("last_name", user.getLastdName());
-                        userMap.put("avatar_url", user.getAvatarUrl());
+        if (SessionToken.isExpired()) {
+            errorCode = -101;
+            errorMessage = "Invalid accessToken: token time is expired";
+            Logging.getLogger().warn("Error in restoreSession: token time is expired");
+        } else {
+            try{
+                SessionToken.updateExpireTime(ttl);
+                TokenInfo tokenInfo = SessionToken.verifyToken(token);
+                if (tokenInfo != null){
+                    User user = getValueFromFile(Integer.valueOf(tokenInfo.getUserId()));
+                    responseData = fillResponseData(token, ttl, fillUserData(user), fillStatusData(activeQuizCount, completeQuizCount));
+                    errorCode = 0;
 
-                        statusMap.put("active_quiz_cnt", activeQuizCount);
-                        statusMap.put("complete_quiz_cnt", completeQuizCount);
-
-                        responseData.put("access_token", token);
-                        responseData.put("ttl", ttl);
-                        responseData.put("profile", userMap);
-                        responseData.put("status", statusMap);
-
-                        errorCode = 0;
-                    }
-                }else {
+                } else {
                     errorCode = -101;
                     errorMessage = "Invalid user access token";
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorCode = -101;
-                errorMessage = "Invalid user access token";
+            }catch (Exception e){
+                errorCode = -102;
+                errorMessage = "Invalid request";
+                Logging.getLogger().error("Error in restore session: invalid request");
             }
-        } else {
-            errorCode = -102;
-            errorMessage = "Invalid request. Please log in system and retry.";
         }
+
         JSONObject response = new JSONObject(createResponseContainer(errorCode, errorMessage, responseData));
 
         return response.toJSONString();
@@ -146,33 +117,24 @@ public class UserControllerImpl implements BaseUserController {
         int errorCode = -1;
         String errorMessage = "";
 
-        Map responseData = new LinkedHashMap();
+        Map<String, Object> responseData = new LinkedHashMap<>();
 
-        try {
-            if (SessionToken.isValid(token)) {
-                if (SessionToken.isExpired()) {
-//                    throw new TokenExpiredException("Token time is expired. Please authorise again.");
-                    errorCode = -101;
-                    errorMessage = "Invalid user access token: token time is expired";
+        if (SessionToken.isExpired()) {
+            errorCode = -101;
+            errorMessage = "Invalid accessToken: token time is expired";
+            Logging.getLogger().warn("Error in restoreSession: token time is expired");
+        } else {
+            try {
+                SessionToken.updateExpireTime(ttl);
 
-                } else {
+                responseData.put("status", fillStatusData(activeQuizCount, completeQuizCount));
+                errorCode = 0;
 
-                    SessionToken.updateExpireTime(ttl);
-                    Map statusMap = new HashMap();
-                    statusMap.put("active_quiz_cnt", activeQuizCount);
-                    statusMap.put("complete_quiz_cnt", completeQuizCount);
-
-                    responseData.put("status", statusMap);
-                    errorCode = 0;
-                }
-            } else {
+            } catch (Exception e) {
                 errorCode = -101;
                 errorMessage = "Invalid user access token";
+                Logging.getLogger().error("Error in restore session: Invalid user access token");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            errorCode = -101;
-            errorMessage = "Invalid user access token";
         }
         JSONObject response = new JSONObject(createResponseContainer(errorCode, errorMessage, responseData));
 
@@ -189,8 +151,8 @@ public class UserControllerImpl implements BaseUserController {
         return "userId " + userId;
     }
 
-    private Map createResponseContainer(int errorCode, String errorMessage, Map responseData){
-        Map responseContainer = new LinkedHashMap();
+    private Map<String, Object> createResponseContainer(int errorCode, String errorMessage, Map responseData){
+        Map<String, Object> responseContainer = new LinkedHashMap<>();
         responseContainer.put("errorCode", errorCode);
         responseContainer.put("errorMessage", errorMessage);
         responseContainer.put("data", responseData);
@@ -198,10 +160,37 @@ public class UserControllerImpl implements BaseUserController {
         return responseContainer;
     }
 
+    private Map<String, Object>  fillUserData(User user){
+        Map<String, Object> userMap = new LinkedHashMap<>();
+        userMap.put("id", user.getId());
+        userMap.put("first_name", user.getFirstName());
+        userMap.put("last_name", user.getLastdName());
+        userMap.put("avatar_url", user.getAvatarUrl());
+
+        return userMap;
+    }
+
+    private Map<String, Object> fillStatusData(Integer activeQuizCount, Integer completeQuizCount){
+        Map<String, Object> statusMap = new LinkedHashMap<>();
+        statusMap.put("active_quiz_cnt", activeQuizCount);
+        statusMap.put("complete_quiz_cnt", completeQuizCount);
+
+        return statusMap;
+    }
+
+    private Map<String, Object>  fillResponseData(String token, Long ttl, Map<String, Object> userMap, Map<String, Object> statusMap){
+        Map<String, Object> responseData = new LinkedHashMap<>();
+        responseData.put("access_token", token);
+        responseData.put("ttl", ttl);
+        responseData.put("profile", userMap);
+        responseData.put("status", statusMap);
+
+        return responseData;
+    }
 
     //tmp functionality while DB is not available
 
-    private User getValueFromFile(int id)throws Exception{
+    private User getValueFromFile(Integer id)throws Exception{
         List<User> list = getUserListFromFile();
         return list.get(id - 1);
     }

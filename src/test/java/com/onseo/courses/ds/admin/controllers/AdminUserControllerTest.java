@@ -1,5 +1,6 @@
-package com.onseo.courses.ds.controllers;
+package com.onseo.courses.ds.admin.controllers;
 
+import com.onseo.courses.ds.controllers.AbstractJsonHandler;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
@@ -7,10 +8,12 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class UserControllerTest extends AbstractJsonHandler{
+public class AdminUserControllerTest extends AbstractJsonHandler {
 
     @Before
     public void init(){
@@ -18,30 +21,12 @@ public class UserControllerTest extends AbstractJsonHandler{
     }
 
     @Test
-    public void authUserCorrectTest()throws Exception {
-        String uri = "/api/authuser";
+    public void addUserTest() throws Exception{
+
+        //Authentication phase
+        String uriAuth = "/api/authuser";
         String login = "5";
         String password = "password";
-        MvcResult result = mvc.perform(MockMvcRequestBuilders
-                .post(uri)
-                .param("uId", login)
-                .param("password", password))
-                .andReturn();
-
-        int status = result.getResponse().getStatus();
-        assertEquals(200, status);
-
-        String content = result.getResponse().getContentAsString();
-        assertEquals("0", getErrorCodeFromJsonString(content));
-    }
-
-    @Test
-    public void restoreSessionTest() throws Exception{
-        String uriAuth= "/api/authuser";
-        String uriRestore = "/api/restore_session";
-        String login = "5";
-        String password = "password";
-        String userToken = "token";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uriAuth)
                 .param("uId", login)
@@ -50,46 +35,42 @@ public class UserControllerTest extends AbstractJsonHandler{
 
         int status = result.getResponse().getStatus();
         assertEquals(200, status);
-
         String content = result.getResponse().getContentAsString();
-        System.out.println(content);
-        userToken = getTokenFromJsonString(content);
-        System.out.println("usertoken " + userToken);
+        assertEquals("0", getErrorCodeFromJsonString(content));
+        String userToken = getTokenFromJsonString(content);
+
+        //Add new user to DB phase
+        String uriAdd = "/admin/user";
+        String id = "11";
+        String firstName = "John";
+        String lastName = "Nikels";
+        String avatar_url = "someFaces.com";
+        List<String> subordinates_id = new ArrayList<>();
+        List<String> manager_id = new ArrayList<>();
 
         MvcResult result1 = mvc.perform(MockMvcRequestBuilders
-                .post(uriRestore)
+                .put(uriAdd)
+                .param("id", id)
+                .param("firstName", firstName)
+                .param("lastName", lastName)
+                .param("avatar_url", avatar_url)
                 .header("access_token", userToken))
                 .andReturn();
 
         int status1 = result1.getResponse().getStatus();
         assertEquals(200, status1);
-
-        assertEquals("0", getErrorCodeFromJsonString(content));
-
-        String wrongToken = "wrong token";
-
-        MvcResult result2 = mvc.perform(MockMvcRequestBuilders
-                .post(uriRestore)
-                .header("access_token", wrongToken))
-                .andReturn();
-
-        int status2 = result1.getResponse().getStatus();
-        assertEquals(200, status2);
-
-        String content1 = result2.getResponse().getContentAsString();
-        assertEquals("Invalid request", getErrorMsgFromJsonString(content1));
-
-        assertEquals("-102", getErrorCodeFromJsonString(content1));
+        String content1 = result1.getResponse().getContentAsString();
+        assertEquals("0", getErrorCodeFromJsonString(content1));
 
     }
 
     @Test
-    public void getStatus() throws Exception{
-        String uriAuth= "/api/authuser";
-        String uriStatus = "/api/status";
+    public void getUserListTest()throws Exception{
+
+        //Authentication phase
+        String uriAuth = "/api/authuser";
         String login = "5";
         String password = "password";
-        String userToken = "token";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uriAuth)
                 .param("uId", login)
@@ -98,32 +79,24 @@ public class UserControllerTest extends AbstractJsonHandler{
 
         int status = result.getResponse().getStatus();
         assertEquals(200, status);
-
         String content = result.getResponse().getContentAsString();
-        userToken = getTokenFromJsonString(content);
-        System.out.println(userToken);
+        System.out.println("auth " + content);
+        assertEquals("0", getErrorCodeFromJsonString(content));
+        String userToken = getTokenFromJsonString(content);
 
+        //List of users phase
+        String uriGetList = "/admin/userList";
         MvcResult result1 = mvc.perform(MockMvcRequestBuilders
-                .get(uriStatus)
+                .put(uriGetList)
                 .header("access_token", userToken))
                 .andReturn();
 
         int status1 = result1.getResponse().getStatus();
         assertEquals(200, status1);
-
-        assertEquals("0", getErrorCodeFromJsonString(content));
+        String content1 = result1.getResponse().getContentAsString();
+        System.out.println("add "+ content1);
+        assertEquals("0", getErrorCodeFromJsonString(content1));
     }
-
-    @Test
-    public void getUser(){
-
-    }
-
-    @Test
-    public void getUserList(){
-
-    }
-
 
     private String getTokenFromJsonString(String content) throws Exception{
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
@@ -140,5 +113,4 @@ public class UserControllerTest extends AbstractJsonHandler{
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
         return String.valueOf(jsonObject.get("errorCode"));
     }
-
 }
