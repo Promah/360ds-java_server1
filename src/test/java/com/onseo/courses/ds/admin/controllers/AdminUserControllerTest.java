@@ -1,8 +1,6 @@
 package com.onseo.courses.ds.admin.controllers;
 
 import com.onseo.courses.ds.controllers.AbstractJsonHandler;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
@@ -98,19 +96,4 @@ public class AdminUserControllerTest extends AbstractJsonHandler {
         assertEquals("0", getErrorCodeFromJsonString(content1));
     }
 
-    private String getTokenFromJsonString(String content) throws Exception{
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
-        JSONObject data = (JSONObject) jsonObject.get("data");
-        return String.valueOf(data.get("access_token"));
-    }
-
-    private String getErrorMsgFromJsonString(String content) throws Exception{
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
-        return String.valueOf(jsonObject.get("errorMessage"));
-    }
-
-    private String getErrorCodeFromJsonString(String content) throws Exception{
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
-        return String.valueOf(jsonObject.get("errorCode"));
-    }
 }

@@ -1,10 +1,13 @@
 package com.onseo.courses.ds.admin.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
-import com.onseo.courses.ds.admin.interfaces.BaseUserController;
+import com.onseo.courses.ds.admin.interfaces.BaseAdminUserController;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.logger.Logging;
-import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class AdminUserControllerImpl implements BaseUserController {
+public class AdminUserControllerImpl implements BaseAdminUserController {
 
     //imitation of DB
     private List<User> userList = new ArrayList<>();
@@ -23,7 +26,7 @@ public class AdminUserControllerImpl implements BaseUserController {
     public String addUser(String token, User user, List<String> subordinatesIdList, List<String> managerIdList) {
         int errorCode = -1;
         String errorMessage = "";
-        Map<String, Object> responseData = new LinkedHashMap<>();
+        JsonObject responseData = new JsonObject();
 
         if (SessionToken.isExpired()){
             errorCode = -101;
@@ -40,7 +43,7 @@ public class AdminUserControllerImpl implements BaseUserController {
                 }
 
                 userList.add(user);
-                responseData.put("data", fillUserData(user));
+                responseData = fillUserData(user);
                 errorCode = 0;
             }catch (Exception e){
                 errorCode = -102;
@@ -49,19 +52,19 @@ public class AdminUserControllerImpl implements BaseUserController {
             }
         }
 
-        responseData.put("errorCode", errorCode);
-        responseData.put("errorMessage", errorMessage);
+        JsonObject response = createResponseContainer(errorCode, errorMessage, responseData);
 
-        JSONObject response = new JSONObject(responseData);
-
-        return response.toJSONString();
+        return response.toString();
     }
 
     @Override
     public String getUserList(String token) {
         int errorCode = -1;
         String errorMessage = "";
-        Map<String, Object> responseData = new LinkedHashMap<>();
+
+        JsonObject responseData = new JsonObject();
+        Gson builder = new GsonBuilder().create();
+        String res = "";
 
         if (SessionToken.isExpired()){
             errorCode = -101;
@@ -70,8 +73,7 @@ public class AdminUserControllerImpl implements BaseUserController {
         }else {
             try{
                 SessionToken.updateExpireTime(ttl);
-
-                responseData.put("data", userList);
+                responseData.add("data", builder.toJsonTree(userList));
                 errorCode = 0;
             }catch (Exception e){
                 errorCode = -102;
@@ -79,20 +81,27 @@ public class AdminUserControllerImpl implements BaseUserController {
                 Logging.getLogger().error("Error in restore session: invalid request");
             }
         }
-        responseData.put("errorCode", errorCode);
-        responseData.put("errorMessage", errorMessage);
-        JSONObject response = new JSONObject(responseData);
-
-        return response.toJSONString();
+        JsonObject response = createResponseContainer(errorCode, errorMessage, responseData);
+        return response.toString();
     }
 
-    private Map<String, Object> fillUserData(User user) {
-        Map<String, Object> userMap = new LinkedHashMap<>();
-        userMap.put("id", user.getId());
-        userMap.put("firstName", user.getFirstName());
-        userMap.put("lastName", user.getLastdName());
-        userMap.put("avatar_url", user.getAvatarUrl());
+    private JsonObject fillUserData(User user) {
+        JsonObject userData = new JsonObject();
+        userData.addProperty("id", user.getId());
+        userData.addProperty("firstName", user.getFirstName());
+        userData.addProperty("lastName", user.getLastdName());
+        userData.addProperty("avatar_url", user.getAvatarUrl());
 
-        return userMap;
+        return userData;
     }
+
+    private JsonObject createResponseContainer(int errorCode, String errorMessage, JsonObject responseData){
+        JsonObject responseContainer = new JsonObject();
+        responseContainer.addProperty("errorCode", errorCode);
+        responseContainer.addProperty("errorMessage", errorMessage);
+        responseContainer.add("data", responseData);
+
+        return responseContainer;
+    }
+
 }

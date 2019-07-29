@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-public interface BaseUserController {
+public interface BaseAdminUserController {
 
     @PutMapping("/user")
     public String addUser(@RequestHeader(name="access_token")String token, User user,

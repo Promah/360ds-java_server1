@@ -1,14 +1,15 @@
 package com.onseo.courses.ds.controllers;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.FileReader;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class UserControllerTest extends AbstractJsonHandler{
 
@@ -124,21 +125,17 @@ public class UserControllerTest extends AbstractJsonHandler{
 
     }
 
+    public String test()throws Exception{
 
-    private String getTokenFromJsonString(String content) throws Exception{
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
-        JSONObject data = (JSONObject) jsonObject.get("data");
-        return String.valueOf(data.get("access_token"));
+        JsonParser parser = new JsonParser();
+        JsonObject ggg = (JsonObject) parser.parse(new FileReader(getClass().getClassLoader().getResource("mocks/valid_auth_user.json").getFile()));
+        System.out.println(ggg.toString());
+        System.out.println(((JsonObject)ggg.get("data")).get("accessToken").toString());
+        System.out.println(ggg.get("errorCode").toString());
+        System.out.println(ggg.get("errorMessage").toString());
+        return ggg.toString();
     }
 
-    private String getErrorMsgFromJsonString(String content) throws Exception{
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
-        return String.valueOf(jsonObject.get("errorMessage"));
-    }
 
-    private String getErrorCodeFromJsonString(String content) throws Exception{
-        JSONObject jsonObject = (JSONObject) new JSONParser().parse(content);
-        return String.valueOf(jsonObject.get("errorCode"));
-    }
 
 }
