@@ -41,7 +41,7 @@ public class QuizControllerImplTest {
     }
 
     @Test
-    public void postQuizSubmit() throws Exception {
+    public void postQuizSubmitTest() throws Exception {
         String url = "/api/quiz/submit/1";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url)
                 .accept(MediaType.APPLICATION_JSON))
