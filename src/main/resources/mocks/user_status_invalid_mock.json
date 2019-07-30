@@ -1,5 +1,5 @@
 {
-  "errorCode": 101,
+  "errorCode": -101,
   "errorMessage": "invalid accessToken",
   "data": ""
 }
