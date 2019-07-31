@@ -146,18 +146,6 @@ public class UserControllerImpl implements BaseUserController {
         return response.toString();
     }
 
-    @GetMapping("/test")
-    public String test()throws Exception{
-
-        JsonParser parser = new JsonParser();
-        JsonObject ggg = (JsonObject) parser.parse(new FileReader(getClass().getClassLoader().getResource("mocks/valid_auth_user.json").getFile()));
-        System.out.println(ggg.toString());
-        System.out.println(((JsonObject)ggg.get("data")).get("accessToken").toString());
-        System.out.println(ggg.get("errorCode").toString());
-        System.out.println(ggg.get("errorMessage").toString());
-        return ggg.toString();
-    }
-
     @Override
     public String getUserList() {
         return "some userList";
@@ -221,11 +209,11 @@ public class UserControllerImpl implements BaseUserController {
         return list;
     }
 
-    protected <T> T mapFromJson(String json, Class<T> clazz)
+    protected <T> T mapFromJson(String json, Class<T> tClass)
             throws JsonParseException, JsonMappingException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(json, clazz);
+        return objectMapper.readValue(json, tClass);
     }
 
 
