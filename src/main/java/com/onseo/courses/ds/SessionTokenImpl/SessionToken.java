@@ -3,6 +3,8 @@ package com.onseo.courses.ds.SessionTokenImpl;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.onseo.courses.ds.interfaces.SessionTokenInterface;
+import com.onseo.courses.ds.logger.Logging;
+import com.sun.istack.internal.logging.Logger;
 import net.oauth.jsontoken.Checker;
 import net.oauth.jsontoken.JsonToken;
 import net.oauth.jsontoken.JsonTokenParser;
@@ -60,38 +62,23 @@ public class    SessionToken implements SessionTokenInterface {
 
         final Verifier verifier = new HmacSHA256Verifier(SIGNING_KEY.getBytes());
 
-        VerifierProvider locator = new VerifierProvider() {
-            @Override
-            public List<Verifier> findVerifier(String id, String key) {
-                return Lists.newArrayList(verifier);
-            }
-        };
-
+        VerifierProvider locator = (id, key) -> Lists.newArrayList(verifier);
         VerifierProviders locators = new VerifierProviders();
-
         locators.setVerifierProvider(SignatureAlgorithm.HS256,locator);
-        Checker checker = new Checker() {
-            @Override
-            public void check(JsonObject payload) throws SignatureException {
-
-            }
-        };
+        Checker checker = payload -> {};
         JsonTokenParser parser = new JsonTokenParser(locators,checker);
-        JsonToken jsonToken;
 
-        jsonToken = parser.verifyAndDeserialize(token);
+        JsonToken jsonToken = parser.verifyAndDeserialize(token);
         System.out.println("from verif " + jsonToken.getExpiration().getMillis());
 
         JsonObject payload = jsonToken.getPayloadAsJsonObject();
 
         String issuer = payload.getAsJsonPrimitive("iss").getAsString();
         String userId = payload.getAsJsonObject("info").getAsJsonPrimitive("userId").getAsString();
+        System.out.println("USER ID CREATED FROM JSON " + userId);
 
         if(issuer.equals(ISSUER) && !StringUtils.isEmpty(userId)){
             tokenInfo.setUserId(userId);
-
-            tokenInfo.setIssued(new DateTime(payload.getAsJsonPrimitive("iat").getAsLong()));
-            tokenInfo.setExpires(new DateTime(payload.getAsJsonPrimitive("exp").getAsLong()));
             return tokenInfo;
         }else{
             return null;
@@ -104,8 +91,7 @@ public class    SessionToken implements SessionTokenInterface {
             token.setExpiration(new Instant(calendar.getTimeInMillis() + 1000L * newDurationTime));
             System.out.println("exp time " + new Date(calendar.getTimeInMillis() + 1000L*newDurationTime));
         } else{
-            //log
-            System.out.println("Wrong value of token duration time");
+            Logging.getLogger().warn("Error in updateExpireTime: Wrong value of token duration time = " + newDurationTime);
         }
     }
 

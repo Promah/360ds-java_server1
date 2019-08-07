@@ -3,13 +3,17 @@ package com.onseo.courses.ds.controllers;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
+import com.onseo.courses.ds.SessionTokenImpl.TokenInfo;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.BaseUserController;
+import com.onseo.courses.ds.logger.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileReader;
@@ -21,12 +25,11 @@ import static com.onseo.courses.ds.SessionTokenImpl.SessionToken.createToken;
 @RestController
 public class UserControllerImpl implements BaseUserController {
 
-    private Long ttl = 20L;
-    private Integer selectedId;
+    private Long ttl = 30L;
 
     @Override
     public String authUser(String uId, String password) {
-        selectedId = Integer.valueOf(uId);
+        Integer selectedId = Integer.valueOf(uId);
         System.out.println("uid " + uId + " int " + selectedId);
         String token = "";
 
@@ -35,13 +38,10 @@ public class UserControllerImpl implements BaseUserController {
         int errorCode = -1;
         String errorMessage = "";
 
-        Map userMap = new LinkedHashMap();
-        Map statusMap = new LinkedHashMap();
-        Map responseData = new LinkedHashMap();
+        JsonObject responseGData = new JsonObject();
+
         try {
             List<User> userList = getUserListFromFile();
-
-
 
             if (selectedId < userList.size()) {
                 User user = userList.get(selectedId - 1);
@@ -49,38 +49,29 @@ public class UserControllerImpl implements BaseUserController {
                 token = createToken(uId, ttl);
 
                 if (user != null) {
-                    userMap.put("id", user.getId());
-                    userMap.put("first_name", user.getFirstName());
-                    userMap.put("last_name", user.getLastdName());
-                    userMap.put("avatar_url", user.getAvatarUrl());
-
-                    statusMap.put("active_quiz_cnt", activeQuizCount);
-                    statusMap.put("complete_quiz_cnt", completeQuizCount);
-
-                    responseData.put("access_token", token);
-                    responseData.put("ttl", ttl);
-                    responseData.put("profile", userMap);
-                    responseData.put("status", statusMap);
+                    responseGData = fillResponseData(token, ttl, fillUserData(user), fillStatusData(activeQuizCount, completeQuizCount));
                     errorCode = 0;
 
                 } else {
                     errorCode = -100;
                     errorMessage = "Invalid credentials";
+                    Logging.getLogger().warn("Error in authUser: user instance equal to null");
                 }
             } else {
                 errorCode = -100;
                 errorMessage = "Invalid credentials";
+                Logging.getLogger().warn("Error in authUser: wrong id = " + selectedId);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorCode = -100;
-            errorMessage = "Invalid credentials";
-
+            errorCode = -102;
+            errorMessage = "Invalid request";
+            Logging.getLogger().error("Error in authUser: invalid request with id = "+ uId + ", password = " + password);
         }
 
-        JSONObject response = new JSONObject(createResponseContainer(errorCode, errorMessage, responseData));
+        JsonObject responseG = createResponseContainer(errorCode, errorMessage, responseGData);
 
-        return response.toJSONString();
+        return responseG.toString();
     }
 
     @Override
@@ -92,51 +83,36 @@ public class UserControllerImpl implements BaseUserController {
         int errorCode = -1;
         String errorMessage = "";
 
-        Map userMap = new LinkedHashMap();
-        Map statusMap = new LinkedHashMap();
-        Map responseData = new LinkedHashMap();
-        if (selectedId != null) {
-            try {
-                if (SessionToken.isValid(token)) {
-                    if (SessionToken.isExpired()) {
-//                      throw new TokenExpiredException("Token time is expired. Please authorise again.");
-                        errorCode = -101;
-                        errorMessage = "Invalid accessToken: token time is expired";
-                    } else {
-                        SessionToken.updateExpireTime(ttl);
-                        User user = getValueFromFile(selectedId);
+//        Map<String, Object> responseData = new LinkedHashMap<>();
+        JsonObject responseData = new JsonObject();
 
-                        userMap.put("id", user.getId());
-                        userMap.put("first_name", user.getFirstName());
-                        userMap.put("last_name", user.getLastdName());
-                        userMap.put("avatar_url", user.getAvatarUrl());
+        if (SessionToken.isExpired()) {
+            errorCode = -101;
+            errorMessage = "Invalid accessToken: token time is expired";
+            Logging.getLogger().warn("Error in restoreSession: token time is expired");
+        } else {
+            try{
+                SessionToken.updateExpireTime(ttl);
+                TokenInfo tokenInfo = SessionToken.verifyToken(token);
+                if (tokenInfo != null){
+                    User user = getValueFromFile(Integer.valueOf(tokenInfo.getUserId()));
+                    responseData = fillResponseData(token, ttl, fillUserData(user), fillStatusData(activeQuizCount, completeQuizCount));
+                    errorCode = 0;
 
-                        statusMap.put("active_quiz_cnt", activeQuizCount);
-                        statusMap.put("complete_quiz_cnt", completeQuizCount);
-
-                        responseData.put("access_token", token);
-                        responseData.put("ttl", ttl);
-                        responseData.put("profile", userMap);
-                        responseData.put("status", statusMap);
-
-                        errorCode = 0;
-                    }
-                }else {
+                } else {
                     errorCode = -101;
                     errorMessage = "Invalid user access token";
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                errorCode = -101;
-                errorMessage = "Invalid user access token";
+            }catch (Exception e){
+                errorCode = -102;
+                errorMessage = "Invalid request";
+                Logging.getLogger().error("Error in restore session: invalid request");
             }
-        } else {
-            errorCode = -102;
-            errorMessage = "Invalid request. Please log in system and retry.";
         }
-        JSONObject response = new JSONObject(createResponseContainer(errorCode, errorMessage, responseData));
 
-        return response.toJSONString();
+        JsonObject response = createResponseContainer(errorCode, errorMessage, responseData);
+
+        return response.toString();
     }
 
     @Override
@@ -146,37 +122,28 @@ public class UserControllerImpl implements BaseUserController {
         int errorCode = -1;
         String errorMessage = "";
 
-        Map responseData = new LinkedHashMap();
+        JsonObject responseData = new JsonObject();
 
-        try {
-            if (SessionToken.isValid(token)) {
-                if (SessionToken.isExpired()) {
-//                    throw new TokenExpiredException("Token time is expired. Please authorise again.");
-                    errorCode = -101;
-                    errorMessage = "Invalid user access token: token time is expired";
+        if (SessionToken.isExpired()) {
+            errorCode = -101;
+            errorMessage = "Invalid accessToken: token time is expired";
+            Logging.getLogger().warn("Error in restoreSession: token time is expired");
+        } else {
+            try {
+                SessionToken.updateExpireTime(ttl);
 
-                } else {
+                responseData =  fillStatusData(activeQuizCount, completeQuizCount);
+                errorCode = 0;
 
-                    SessionToken.updateExpireTime(ttl);
-                    Map statusMap = new HashMap();
-                    statusMap.put("active_quiz_cnt", activeQuizCount);
-                    statusMap.put("complete_quiz_cnt", completeQuizCount);
-
-                    responseData.put("status", statusMap);
-                    errorCode = 0;
-                }
-            } else {
+            } catch (Exception e) {
                 errorCode = -101;
                 errorMessage = "Invalid user access token";
+                Logging.getLogger().error("Error in restore session: Invalid user access token");
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            errorCode = -101;
-            errorMessage = "Invalid user access token";
         }
-        JSONObject response = new JSONObject(createResponseContainer(errorCode, errorMessage, responseData));
+        JsonObject response = createResponseContainer(errorCode, errorMessage, responseData);
 
-        return response.toJSONString();
+        return response.toString();
     }
 
     @Override
@@ -189,19 +156,45 @@ public class UserControllerImpl implements BaseUserController {
         return "userId " + userId;
     }
 
-    private Map createResponseContainer(int errorCode, String errorMessage, Map responseData){
-        Map responseContainer = new LinkedHashMap();
-        responseContainer.put("errorCode", errorCode);
-        responseContainer.put("errorMessage", errorMessage);
-        responseContainer.put("data", responseData);
-
+    private JsonObject createResponseContainer(int errorCode, String errorMessage, JsonObject responseData){
+        JsonObject responseContainer = new JsonObject();
+        responseContainer.addProperty("errorCode", errorCode);
+        responseContainer.addProperty("errorMessage", errorMessage);
+        responseContainer.add("data", responseData);
         return responseContainer;
     }
+    
+    private JsonObject fillUserData(User user){
+        JsonObject userData = new JsonObject();
+        userData.addProperty("id", user.getId());
+        userData.addProperty("first_name", user.getFirstName());
+        userData.addProperty("last_name", user.getLastdName());
+        userData.addProperty("avatar_url", user.getAvatarUrl());
 
+        return userData;
+    }
+
+    private JsonObject fillStatusData(Integer activeQuizCount, Integer completeQuizCount){
+        JsonObject statusData = new JsonObject();
+        statusData.addProperty("active_quiz_cnt", activeQuizCount);
+        statusData.addProperty("complete_quiz_cnt", completeQuizCount);
+
+        return statusData;
+    }
+
+    private JsonObject fillResponseData(String token, Long ttl, JsonObject userMap, JsonObject statusMap){
+        JsonObject responseData = new JsonObject();
+        responseData.addProperty("access_token", token);
+        responseData.addProperty("ttl", ttl);
+        responseData.add("profile", userMap);
+        responseData.add("status", statusMap);
+
+        return responseData;
+    }
 
     //tmp functionality while DB is not available
 
-    private User getValueFromFile(int id)throws Exception{
+    private User getValueFromFile(Integer id)throws Exception{
         List<User> list = getUserListFromFile();
         return list.get(id - 1);
     }
@@ -216,11 +209,11 @@ public class UserControllerImpl implements BaseUserController {
         return list;
     }
 
-    protected <T> T mapFromJson(String json, Class<T> clazz)
+    protected <T> T mapFromJson(String json, Class<T> tClass)
             throws JsonParseException, JsonMappingException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(json, clazz);
+        return objectMapper.readValue(json, tClass);
     }
 
 

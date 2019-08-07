@@ -1,22 +1,20 @@
-[
-  {
-    "errorCode":0,
-    "errorMessage":"",
-    "data":{
-      "profile":{
-        "role":"Duis",
-        "name":"Lenore",
-        "chiefId":"15",
-        "active":true,
-        "id":"15",
-        "email":"magna.Nam.ligula@eratin.org"
-      },
-      "accessToken":"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbnNlbzM2MGRzIiwiYXVkIjoiTm90UmVhbGx5SW1wb3J0YW50IiwiaWF0IjoxNTYzOTc4NTA2LCJleHAiOjE1NjM5NzkxMDYsImluZm8iOnsidXNlcklkIjoiMTUifX0.yFNHnY56FEQxqQMsVc9OXCUlW_S6tx4mI-gsRtOx1uA",
-      "ttl":600,
-      "status":{
-        "active_quiz_cnt":3,
-        "complete_quiz_cnt":5
-      }
+{
+  "errorCode":0,
+  "errorMessage":"",
+  "data":{
+    "profile":{
+      "role":"Duis",
+      "name":"Lenore",
+      "chiefId":"15",
+      "active":true,
+      "id":"15",
+      "email":"magna.Nam.ligula@eratin.org"
+    },
+    "access_token":"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbnNlbzM2MGRzIiwiYXVkIjoiTm90UmVhbGx5SW1wb3J0YW50IiwiaWF0IjoxNTYzOTc4NTA2LCJleHAiOjE1NjM5NzkxMDYsImluZm8iOnsidXNlcklkIjoiMTUifX0.yFNHnY56FEQxqQMsVc9OXCUlW_S6tx4mI-gsRtOx1uA",
+    "ttl":600,
+    "status":{
+      "active_quiz_cnt":3,
+      "complete_quiz_cnt":5
     }
   }
-]
+}

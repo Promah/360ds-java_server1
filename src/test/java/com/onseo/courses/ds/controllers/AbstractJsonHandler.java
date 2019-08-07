@@ -2,6 +2,8 @@ package com.onseo.courses.ds.controllers;
 
 import java.io.IOException;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.onseo.courses.ds.Application;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,28 @@ public abstract class AbstractJsonHandler {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);
     }
-    protected <T> T mapFromJson(String json, Class<T> clazz)
+    protected <T> T mapFromJson(String json, Class<T> tClass)
             throws JsonParseException, JsonMappingException, IOException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(json, clazz);
+        return objectMapper.readValue(json, tClass);
     }
+
+    protected String getTokenFromJsonString(String content){
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(content);
+        JsonObject data = (JsonObject) jsonObject.get("data");
+        return data.get("access_token").toString().replace("\"", "");
+
+    }
+
+    protected String getErrorMsgFromJsonString(String content){
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(content);
+        return jsonObject.get("errorMessage").toString().replace("\"", "");
+    }
+
+    protected String getErrorCodeFromJsonString(String content) throws Exception{
+        JsonObject jsonObject = (JsonObject) new JsonParser().parse(content);
+        return jsonObject.get("errorCode").toString();
+    }
+
 }
