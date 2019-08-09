@@ -1,6 +1,9 @@
 package com.onseo.courses.ds.admin.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
 import com.onseo.courses.ds.admin.interfaces.BaseAdminQuizController;
 import com.onseo.courses.ds.controllers.QuizControllerImpl;
@@ -16,28 +19,80 @@ public class AdminQuizControllerImpl implements BaseAdminQuizController {
 
     private Long ttl = 30L;
     private String object;
+    private int errorCode = -1;
+    private String errorMessage = "";
+    String jsonObject;
 
     @Override
-    public Quiz getQuiz(String quizId) {
-        return new QuizControllerImpl().getOpenQuiz(quizId).getOneQuiz(quizId);
+    public String getQuiz(String quizId) {
+
+
+        if (SessionToken.isExpired()){
+            errorCode = -101;
+            errorMessage = "Invalid accessToken: token time is expired";
+            Logging.getLogger().warn("Error in restoreSession: token time is expired");
+        }else {
+            SessionToken.updateExpireTime(ttl);
+            errorCode = 0;
+            try{
+                SessionToken.updateExpireTime(ttl);
+                QuizControllerImpl quizController = new QuizControllerImpl();
+                quizController.setAdminRequest();
+
+                Gson gson = new GsonBuilder().create();
+                jsonObject = gson.toJson(quizController.getOpenQuiz(quizId).getOneQuiz(quizId));
+            }catch (Exception e){
+                errorCode = -102;
+                errorMessage = "Invalid request";
+                Logging.getLogger().error("Error in restore session: invalid request");
+            }
+        }
+
+        JsonObject response = createResponseContainer(errorCode, errorMessage, jsonObject);
+        return response.toString();
     }
 
     @Override
-    public Quiz postQuiz(Quiz quiz) {
+    public String postQuiz(Quiz quiz) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            object = objectMapper.writeValueAsString(quiz);
+        if (SessionToken.isExpired()){
+            errorCode = -101;
+            errorMessage = "Invalid accessToken: token time is expired";
+            Logging.getLogger().warn("Error in restoreSession: token time is expired");
+        }else {
+            SessionToken.updateExpireTime(ttl);
+            errorCode = 0;
+            try{
+                SessionToken.updateExpireTime(ttl);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    object = objectMapper.writeValueAsString(quiz);
+                }
+                catch (Exception e){
+                    Logging.getLogger().trace("Error while quiz serialization to json string");
+                }
+                writeRequest(object);
+                Gson gson = new GsonBuilder().create();
+                jsonObject = gson.toJson(quiz);
+            }catch (Exception e){
+                errorCode = -102;
+                errorMessage = "Invalid request";
+                Logging.getLogger().error("Error in restore session: invalid request");
+            }
         }
-        catch (Exception e){
-            Logging.getLogger().trace("Error while quiz serialization to json string");
-        }
 
-        writeRequest(object);
-
-        return quiz;
+        return jsonObject;
     }
 
+    private JsonObject createResponseContainer(int errorCode, String errorMessage, String responseData){
+        JsonObject responseContainer = new JsonObject();
+        responseContainer.addProperty("errorCode", errorCode);
+        responseContainer.addProperty("errorMessage", errorMessage);
+        responseContainer.addProperty("data", responseData);
+
+        return responseContainer;
+    }
 
 
     private void writeRequest(String json){
@@ -55,28 +110,6 @@ public class AdminQuizControllerImpl implements BaseAdminQuizController {
             }
         }catch (Exception e){
             e.printStackTrace();
-        }
-    }
-
-    public void checkSessionToken(){
-        int errorCode = -1;
-        String errorMessage = "";
-
-        if (SessionToken.isExpired()){
-            errorCode = -101;
-            errorMessage = "Invalid accessToken: token time is expired";
-            Logging.getLogger().warn("Error in restoreSession: token time is expired");
-        }else {
-            SessionToken.updateExpireTime(ttl);
-            errorCode = 0;
-            try{
-                SessionToken.updateExpireTime(ttl);
-
-            }catch (Exception e){
-                errorCode = -102;
-                errorMessage = "Invalid request";
-                Logging.getLogger().error("Error in restore session: invalid request");
-            }
         }
     }
 }
