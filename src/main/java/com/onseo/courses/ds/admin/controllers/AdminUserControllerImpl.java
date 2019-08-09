@@ -3,6 +3,7 @@ package com.onseo.courses.ds.admin.controllers;
 import com.google.gson.*;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
 import com.onseo.courses.ds.admin.interfaces.BaseAdminUserController;
+import com.onseo.courses.ds.constants.ErrorCodes;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.JsonResponseHandler;
 import com.onseo.courses.ds.logger.Logging;
@@ -16,11 +17,6 @@ public class AdminUserControllerImpl implements BaseAdminUserController, JsonRes
 
     private Long ttl = 300L;
     private final static boolean ADMIN = true;
-
-    private final static int STATUS_OK = 0;
-    private final static int INVALID_CREDENTIALS = -100;
-    private final static int INVALID_ACCESS_TOKEN = -101;
-    private final static int INVALID_REQUEST = -102;
 
     private final static String START_PATH = "src/main/resources/admin_request_response_files";
 
@@ -36,7 +32,7 @@ public class AdminUserControllerImpl implements BaseAdminUserController, JsonRes
         JsonObject responseData = new JsonObject();
 
         if (SessionToken.isExpired()) {
-            errorCode = INVALID_ACCESS_TOKEN;
+            errorCode = ErrorCodes.INVALID_ACCESS_TOKEN;
             errorMessage = "Invalid accessToken: token time is expired";
             Logging.getLogger().warn("Error in restoreSession: token time is expired");
         } else {
@@ -45,13 +41,13 @@ public class AdminUserControllerImpl implements BaseAdminUserController, JsonRes
                     SessionToken.updateExpireTime(ttl);
 
                     responseData = fillUserData(user, ADMIN, email, password);
-                    errorCode = STATUS_OK;
+                    errorCode = ErrorCodes.STATUS_OK;
                 } else {
-                    errorCode = INVALID_CREDENTIALS;
+                    errorCode = ErrorCodes.INVALID_CREDENTIALS;
                     errorMessage = "Invalid credentials: user with email " + email + " already exist";
                 }
             } catch (Exception e) {
-                errorCode = INVALID_REQUEST;
+                errorCode = ErrorCodes.INVALID_REQUEST;
                 errorMessage = "Invalid request";
                 Logging.getLogger().error("Error in restore session: invalid request");
             }
@@ -93,16 +89,16 @@ public class AdminUserControllerImpl implements BaseAdminUserController, JsonRes
         Gson builder = new GsonBuilder().create();
 
         if (SessionToken.isExpired()) {
-            errorCode = INVALID_ACCESS_TOKEN;
+            errorCode = ErrorCodes.INVALID_ACCESS_TOKEN;
             errorMessage = "Invalid accessToken: token time is expired";
             Logging.getLogger().warn("Error in restoreSession: token time is expired");
         } else {
             try {
                 SessionToken.updateExpireTime(ttl);
                 responseData.add("users", builder.toJsonTree(getUserDataFromFile()));
-                errorCode = STATUS_OK;
+                errorCode = ErrorCodes.STATUS_OK;
             } catch (Exception e) {
-                errorCode = INVALID_REQUEST;
+                errorCode = ErrorCodes.INVALID_REQUEST;
                 errorMessage = "Invalid request";
                 Logging.getLogger().error("Error in restore session: invalid request");
             }

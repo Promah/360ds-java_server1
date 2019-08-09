@@ -7,6 +7,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
 import com.onseo.courses.ds.SessionTokenImpl.TokenInfo;
+import com.onseo.courses.ds.constants.ErrorCodes;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.BaseUserController;
 import com.onseo.courses.ds.interfaces.JsonResponseHandler;
@@ -33,10 +34,6 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
     private final static boolean USER = false;
 
     private final static int WRONG_ID               =  0;
-    private final static int STATUS_OK              =  0;
-    private final static int INVALID_CREDENTIALS    = -100;
-    private final static int INVALID_ACCESS_TOKEN   = -101;
-    private final static int INVALID_REQUEST        = -102;
 
     private final static String START_PATH           = "src/main/resources/mocks/request_mocks";
 
@@ -76,26 +73,26 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
                         responseData = fillResponseData(token, ttl,
                                 fillUserData(user, USER, data.getEmail(), data.getPassword()),
                                 fillStatusData(activeQuizCount, completeQuizCount));
-                        errorCode = STATUS_OK;
+                        errorCode = ErrorCodes.STATUS_OK;
 
                     } else {
-                        errorCode = INVALID_CREDENTIALS;
+                        errorCode = ErrorCodes.INVALID_CREDENTIALS;
                         errorMessage = "Invalid credentials";
                         Logging.getLogger().warn("Error in authUser: user instance equal to null");
                     }
                 } else {
-                    errorCode = INVALID_CREDENTIALS;
+                    errorCode = ErrorCodes.INVALID_CREDENTIALS;
                     errorMessage = "Invalid credentials: invalid password";
                     Logging.getLogger().warn("Error in authUser: wrong password = " + selectedId);
                 }
             } else {
-                errorCode = INVALID_CREDENTIALS;
+                errorCode = ErrorCodes.INVALID_CREDENTIALS;
                 errorMessage = "Invalid credentials: user id is not exists";
                 Logging.getLogger().warn("Error in authUser: wrong id = " + selectedId);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            errorCode = INVALID_REQUEST;
+            errorCode = ErrorCodes.INVALID_REQUEST;
             errorMessage = "Invalid request";
             Logging.getLogger().error("Error in authUser: invalid request with id = "+ uId + ", password = " + password);
         }
@@ -116,7 +113,7 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
         JsonObject responseData = new JsonObject();
 
         if (SessionToken.isExpired()) {
-            errorCode = INVALID_ACCESS_TOKEN;
+            errorCode = ErrorCodes.INVALID_ACCESS_TOKEN;
             errorMessage = "Invalid accessToken: token time is expired";
             Logging.getLogger().warn("Error in restoreSession: token time is expired");
         } else {
@@ -133,14 +130,14 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
                     responseData = fillResponseData(token, ttl,
                             fillUserData(data.getUser(),USER, data.getEmail(), data.getPassword()),
                             fillStatusData(activeQuizCount, completeQuizCount));
-                    errorCode = STATUS_OK;
+                    errorCode = ErrorCodes.STATUS_OK;
 
                 } else {
-                    errorCode = INVALID_ACCESS_TOKEN;
+                    errorCode = ErrorCodes.INVALID_ACCESS_TOKEN;
                     errorMessage = "Invalid user access token";
                 }
             }catch (Exception e){
-                errorCode = INVALID_REQUEST;
+                errorCode = ErrorCodes.INVALID_REQUEST;
                 errorMessage = "Invalid request";
                 Logging.getLogger().error("Error in restore session: invalid request");
             }
@@ -161,7 +158,7 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
         JsonObject responseData = new JsonObject();
 
         if (SessionToken.isExpired()) {
-            errorCode = INVALID_ACCESS_TOKEN;
+            errorCode = ErrorCodes.INVALID_ACCESS_TOKEN;
             errorMessage = "Invalid accessToken: token time is expired";
             Logging.getLogger().warn("Error in restoreSession: token time is expired");
         } else {
@@ -169,10 +166,10 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
                 SessionToken.updateExpireTime(ttl);
 
                 responseData =  fillStatusData(activeQuizCount, completeQuizCount);
-                errorCode = STATUS_OK;
+                errorCode = ErrorCodes.STATUS_OK;
 
             } catch (Exception e) {
-                errorCode = INVALID_ACCESS_TOKEN;
+                errorCode = ErrorCodes.INVALID_ACCESS_TOKEN;
                 errorMessage = "Invalid user access token";
                 Logging.getLogger().error("Error in restore session: Invalid user access token");
             }
