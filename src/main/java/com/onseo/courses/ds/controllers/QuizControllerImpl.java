@@ -5,12 +5,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
-import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.BaseQuizController;
 import com.onseo.courses.ds.logger.Logging;
 import com.onseo.courses.ds.quiz.Quiz;
-import com.onseo.courses.ds.quiz.QuizAnswerData;
 import com.onseo.courses.ds.quiz.quizSummary.QuizSummary;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,14 +16,11 @@ import java.io.*;
 import java.net.URL;
 import static java.lang.ClassLoader.getSystemClassLoader;
 import com.onseo.courses.ds.quiz.QuizResponse;
-import com.onseo.courses.ds.quiz.quizSummary.QuizSummary;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,7 +57,7 @@ public class QuizControllerImpl implements BaseQuizController {
     }
 
     private List<Quiz> getQuizListFromFile() throws Exception{
-        Object objUser = new JSONParser().parse(new FileReader(Objects.requireNonNull(getClass().getClassLoader().getResource("mocks/mock_quiz")).getFile()));
+        Object objUser = new JSONParser().parse(new FileReader(Objects.requireNonNull(getClass().getClassLoader().getResource("mocks/mock_quiz.json")).getFile()));
         JSONArray array = (JSONArray) objUser;
         List<Quiz> list = new ArrayList<>();
         for (int i = 0; i < array.size(); i++){

@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -13,44 +14,47 @@ import static org.junit.Assert.assertEquals;
 
 public class UserControllerTest extends AbstractJsonHandler{
 
+    private final static int HTTP_STATUS_OK                 = 200;
+    private final static String ERROR_CODE_OK               = "0";
+    private final static String ERROR_CODE_INVALID_REQUEST  = "-102";
+
     @Before
-    public void init(){
+    public void init()throws Exception{
         super.setUp();
+        super.setUpLoginData();
     }
 
     @Test
     public void authUserCorrectTest()throws Exception {
         String uri = "/api/authuser";
-        String login = "5";
-        String password = "password";
+        String jsonRequest = "{\"uId\":\"51\",\"password\":\"pass51\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uri)
-                .param("uId", login)
-                .param("password", password))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(jsonRequest))
                 .andReturn();
 
         int status = result.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(HTTP_STATUS_OK, status);
 
         String content = result.getResponse().getContentAsString();
-        assertEquals("0", getErrorCodeFromJsonString(content));
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content));
     }
 
     @Test
     public void restoreSessionTest() throws Exception{
         String uriAuth= "/api/authuser";
         String uriRestore = "/api/restore_session";
-        String login = "5";
-        String password = "password";
         String userToken = "token";
+        String jsonRequest = "{\"uId\":\"51\",\"password\":\"pass51\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uriAuth)
-                .param("uId", login)
-                .param("password", password))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(jsonRequest))
                 .andReturn();
 
         int status = result.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(HTTP_STATUS_OK, status);
 
         String content = result.getResponse().getContentAsString();
         System.out.println(content);
@@ -63,9 +67,9 @@ public class UserControllerTest extends AbstractJsonHandler{
                 .andReturn();
 
         int status1 = result1.getResponse().getStatus();
-        assertEquals(200, status1);
+        assertEquals(HTTP_STATUS_OK, status1);
 
-        assertEquals("0", getErrorCodeFromJsonString(content));
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content));
 
         String wrongToken = "wrong token";
 
@@ -75,12 +79,12 @@ public class UserControllerTest extends AbstractJsonHandler{
                 .andReturn();
 
         int status2 = result1.getResponse().getStatus();
-        assertEquals(200, status2);
+        assertEquals(HTTP_STATUS_OK, status2);
 
         String content1 = result2.getResponse().getContentAsString();
         assertEquals("Invalid request", getErrorMsgFromJsonString(content1));
 
-        assertEquals("-102", getErrorCodeFromJsonString(content1));
+        assertEquals(ERROR_CODE_INVALID_REQUEST, getErrorCodeFromJsonString(content1));
 
     }
 
@@ -88,17 +92,16 @@ public class UserControllerTest extends AbstractJsonHandler{
     public void getStatus() throws Exception{
         String uriAuth= "/api/authuser";
         String uriStatus = "/api/status";
-        String login = "5";
-        String password = "password";
         String userToken = "token";
+        String jsonRequest = "{\"uId\":\"51\",\"password\":\"pass51\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uriAuth)
-                .param("uId", login)
-                .param("password", password))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(jsonRequest))
                 .andReturn();
 
         int status = result.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(HTTP_STATUS_OK, status);
 
         String content = result.getResponse().getContentAsString();
         userToken = getTokenFromJsonString(content);
@@ -110,9 +113,9 @@ public class UserControllerTest extends AbstractJsonHandler{
                 .andReturn();
 
         int status1 = result1.getResponse().getStatus();
-        assertEquals(200, status1);
+        assertEquals(HTTP_STATUS_OK, status1);
 
-        assertEquals("0", getErrorCodeFromJsonString(content));
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content));
     }
 
     @Test
@@ -124,18 +127,5 @@ public class UserControllerTest extends AbstractJsonHandler{
     public void getUserList(){
 
     }
-
-    public String test()throws Exception{
-
-        JsonParser parser = new JsonParser();
-        JsonObject ggg = (JsonObject) parser.parse(new FileReader(getClass().getClassLoader().getResource("mocks/valid_auth_user.json").getFile()));
-        System.out.println(ggg.toString());
-        System.out.println(((JsonObject)ggg.get("data")).get("accessToken").toString());
-        System.out.println(ggg.get("errorCode").toString());
-        System.out.println(ggg.get("errorMessage").toString());
-        return ggg.toString();
-    }
-
-
 
 }

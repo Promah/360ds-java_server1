@@ -1,33 +1,35 @@
 package com.onseo.courses.ds.SessionTokenImpl;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.security.InvalidKeyException;
-import java.security.SignatureException;
 
 import static org.junit.Assert.*;
 
 public class SessionTokenTest {
 
-    @Test
-    public void createTokenTest() {
-        try {
-            String tempToken = SessionToken.createToken("000000001", 1L);
+    private final static String userId = "000000001";
 
-        } catch (SignatureException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
+    @Test
+    public void createTokenTest() throws Exception{
+        Long durationTime = 10L;
+        String tmpToken = SessionToken.createToken(userId, durationTime);
+        assertNotNull(tmpToken);
     }
 
     @Test
-    public void verifyTokenTest() {
-        try {
-            String tempToken = SessionToken.createToken("000000001", 1L);
-            TokenInfo tokenInfo = (TokenInfo) SessionToken.verifyToken(tempToken);
-            Assert.assertNotNull(tokenInfo);
-        } catch (SignatureException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
+    public void verifyTokenTest() throws Exception{
+        Long durationTime = 30L;
+        String tmpToken = SessionToken.createToken(userId, durationTime);
+        TokenInfo tokenInfo = SessionToken.verifyToken(tmpToken);
+        assertNotNull(tokenInfo);
+        assertEquals(userId, tokenInfo.getUserId());
+    }
+
+    @Test
+    public void expireTimeTest()throws Exception{
+        Long durationTime = 5L;
+        String tmpToken = SessionToken.createToken(userId, durationTime);
+        assertFalse(SessionToken.isExpired());
+        Thread.sleep(5000);
+        assertTrue(SessionToken.isExpired());
     }
 }

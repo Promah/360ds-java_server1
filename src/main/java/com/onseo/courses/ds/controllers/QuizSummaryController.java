@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onseo.courses.ds.logger.Logging;
-import com.onseo.courses.ds.quiz.Quiz;
 import com.onseo.courses.ds.quiz.quizSummary.QuizSummary;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -31,7 +30,7 @@ public class QuizSummaryController {
     }
 
     private List<QuizSummary> getQuizListFromFile() throws Exception{
-        Object objUser = new JSONParser().parse(new FileReader(getClass().getClassLoader().getResource("mocks/quiz_summary_mock").getFile()));
+        Object objUser = new JSONParser().parse(new FileReader(getClass().getClassLoader().getResource("mocks/quiz_summary_mock.json").getFile()));
         JSONArray array = (JSONArray) objUser;
         List<QuizSummary> list = new ArrayList<>();
         for (int i = 0; i < array.size(); i++){

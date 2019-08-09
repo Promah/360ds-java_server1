@@ -1,7 +1,9 @@
 package com.onseo.courses.ds.controllers;
 
+import java.io.FileReader;
 import java.io.IOException;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.onseo.courses.ds.Application;
@@ -23,6 +25,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
 public abstract class AbstractJsonHandler {
+
+    protected String login;
+    protected String email;
+    protected String password;
+
     protected MockMvc mvc;
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -46,7 +53,6 @@ public abstract class AbstractJsonHandler {
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(content);
         JsonObject data = (JsonObject) jsonObject.get("data");
         return data.get("access_token").toString().replace("\"", "");
-
     }
 
     protected String getErrorMsgFromJsonString(String content){
@@ -57,6 +63,25 @@ public abstract class AbstractJsonHandler {
     protected String getErrorCodeFromJsonString(String content) throws Exception{
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(content);
         return jsonObject.get("errorCode").toString();
+    }
+
+    protected String getUserLoginData() throws Exception{
+        int index = 0;
+        JsonArray array = (JsonArray) new JsonParser().parse(new FileReader(getClass().getClassLoader()
+                .getResource("admin_request_response_files/add_user_request.json").getFile()));
+
+        String loginData = array.get(index).getAsJsonObject().get("id").getAsString();
+        loginData += " ," + array.get(index).getAsJsonObject().get("password").getAsString();
+        loginData += " ," + array.get(index).getAsJsonObject().get("email").getAsString();
+        return loginData;
+    }
+
+    protected void setUpLoginData() throws Exception{
+        String pattern = "\\s*,\\s*";
+        String[] loginData = getUserLoginData().split(pattern);
+        login = loginData[0];
+        password = loginData[1];
+        email = loginData[2];
     }
 
 }
