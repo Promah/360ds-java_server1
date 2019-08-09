@@ -1,0 +1,192 @@
+[
+  {
+    "id": "50",
+    "firstName": "john",
+    "lastName": "nikels",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "25",
+      "16"
+    ],
+    "manager_id": [
+      "32"
+    ],
+    "email": "john@email",
+    "password": "pass50"
+  },
+  {
+    "id": "51",
+    "firstName": "kenny",
+    "lastName": "johnson",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "52"
+    ],
+    "manager_id": [
+      "115"
+    ],
+    "email": "kenny@email",
+    "password": "pass51"
+  },
+  {
+    "id": "52",
+    "firstName": "ram",
+    "lastName": "silly",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "9"
+    ],
+    "manager_id": [
+      "14",
+      "75",
+      "11"
+    ],
+    "email": "ram@email",
+    "password": "pass52"
+  },
+  {
+    "id": "53",
+    "firstName": "sam",
+    "lastName": "hobitson",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "35",
+      "77"
+    ],
+    "manager_id": [
+      "20"
+
+    ],
+    "email": "sam@email",
+    "password": "pass53"
+  },
+  {
+    "id": "54",
+    "firstName": "carly",
+    "lastName": "watson",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "88"
+    ],
+    "manager_id": [
+      "2"
+    ],
+    "email": "carly@email",
+    "password": "pass54"
+  },
+  {
+    "id": "55",
+    "firstName": "marty",
+    "lastName": "green",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "12"
+    ],
+    "manager_id": [
+      "22",
+      "114"
+    ],
+    "email": "marty@email",
+    "password": "pass55"
+  },
+  {
+    "id": "56",
+    "firstName": "marty",
+    "lastName": "green",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "12"
+    ],
+    "manager_id": [
+      "22",
+      "114"
+    ],
+    "email": "marty1233@email",
+    "password": "pass55"
+  }
+,{
+  "id": "11",
+  "firstName": "John",
+  "lastName": "Nikels",
+  "avatar_url": "someFaces.com",
+  "subordinates_id": ["1"],
+  "manager_id": ["1"],
+  "email": "john@email.com",
+  "password": "pass1111"
+},
+  {
+    "id": "55",
+    "firstName": "marty",
+    "lastName": "green",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "12"
+    ],
+    "manager_id": [
+      "22",
+      "114"
+    ],
+    "email": "marty1255@email",
+    "password": "pass55"
+  },
+  {
+    "id": "55",
+    "firstName": "marty",
+    "lastName": "green",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "12"
+    ],
+    "manager_id": [
+      "22",
+      "114"
+    ],
+    "email": "marty12@email",
+    "password": "pass55"
+  },
+  {
+    "id": "55",
+    "firstName": "marty",
+    "lastName": "green",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "12"
+    ],
+    "manager_id": [
+      "22",
+      "114"
+    ],
+    "email": "marty1215@email",
+    "password": "pass55"
+  },
+  {
+    "id": "55",
+    "firstName": "marty",
+    "lastName": "green",
+    "avatar_url": "urlf",
+    "subordinates_id": [
+      "12"
+    ],
+    "manager_id": [
+      "22",
+      "114"
+    ],
+    "email": "man@email",
+    "password": "pass55"
+  },
+  {
+    "id": "58",
+    "firstName": "jim",
+    "lastName": "stoper",
+    "avatar_url": "urlf2",
+    "subordinates_id": [
+      "77",
+      "22"
+    ],
+    "manager_id": [
+      "87"
+    ],
+    "email": "jim@email",
+    "password": "pass5858"
+  }
+]

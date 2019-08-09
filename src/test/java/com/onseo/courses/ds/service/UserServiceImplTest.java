@@ -11,6 +11,8 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceImplTest {
@@ -21,7 +23,7 @@ public class UserServiceImplTest {
     @Test
     public void getAllUsersTest() {
         List<User> users = userService.getAllUsers();
-        Assert.isTrue(!users.isEmpty());
+        assertFalse(users.isEmpty());
     }
 
     @Test
@@ -31,6 +33,6 @@ public class UserServiceImplTest {
     @Test
     public void getUserById() {
         Optional<User> user = userService.getUserById("5d2a4dd29872ab0bfecc1c9f");
-        Assert.notNull(user.get());
+        assertNotNull(user.get());
     }
 }

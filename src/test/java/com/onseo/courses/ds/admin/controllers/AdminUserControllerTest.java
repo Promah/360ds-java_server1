@@ -3,19 +3,22 @@ package com.onseo.courses.ds.admin.controllers;
 import com.onseo.courses.ds.controllers.AbstractJsonHandler;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class AdminUserControllerTest extends AbstractJsonHandler {
 
+    private final static int HTTP_STATUS_OK                 = 200;
+    private final static String ERROR_CODE_OK               = "0";
+    private final static String ERROR_CODE_INVALID_REQUEST  = "-102";
+
     @Before
-    public void init(){
+    public void init()throws Exception{
         super.setUp();
+        super.setUpLoginData();
     }
 
     @Test
@@ -23,43 +26,34 @@ public class AdminUserControllerTest extends AbstractJsonHandler {
 
         //Authentication phase
         String uriAuth = "/api/authuser";
-        String login = "5";
-        String password = "password";
+        String jsonRequest = "{\"uId\":\"51\",\"password\":\"pass51\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uriAuth)
-                .param("uId", login)
-                .param("password", password))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(jsonRequest))
                 .andReturn();
 
         int status = result.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(HTTP_STATUS_OK, status);
         String content = result.getResponse().getContentAsString();
-        assertEquals("0", getErrorCodeFromJsonString(content));
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content));
         String userToken = getTokenFromJsonString(content);
 
         //Add new user to DB phase
         String uriAdd = "/admin/user";
-        String id = "11";
-        String firstName = "John";
-        String lastName = "Nikels";
-        String avatar_url = "someFaces.com";
-        List<String> subordinates_id = new ArrayList<>();
-        List<String> manager_id = new ArrayList<>();
+        String jsonAddUserRequest = "{\"user\":{\"id\":\"58\",\"firstName\":\"jim\",\"lastName\":\"stoper\",\"avatar_url\":\"urlf2\",\"subordinates_id\":[\"77\",\"22\"],\"manager_id\":[\"87\"]},\"email\":\"jim2@email\",\"password\":\"pass5858\"}";
 
         MvcResult result1 = mvc.perform(MockMvcRequestBuilders
                 .put(uriAdd)
-                .param("id", id)
-                .param("firstName", firstName)
-                .param("lastName", lastName)
-                .param("avatar_url", avatar_url)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(jsonAddUserRequest)
                 .header("access_token", userToken))
                 .andReturn();
 
         int status1 = result1.getResponse().getStatus();
-        assertEquals(200, status1);
+        assertEquals(HTTP_STATUS_OK, status1);
         String content1 = result1.getResponse().getContentAsString();
-        assertEquals("0", getErrorCodeFromJsonString(content1));
-
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content1));
     }
 
     @Test
@@ -67,19 +61,18 @@ public class AdminUserControllerTest extends AbstractJsonHandler {
 
         //Authentication phase
         String uriAuth = "/api/authuser";
-        String login = "5";
-        String password = "password";
+        String jsonRequest = "{\"uId\":\"51\",\"password\":\"pass51\"}";
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                 .post(uriAuth)
-                .param("uId", login)
-                .param("password", password))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(jsonRequest))
                 .andReturn();
 
         int status = result.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(HTTP_STATUS_OK, status);
         String content = result.getResponse().getContentAsString();
         System.out.println("auth " + content);
-        assertEquals("0", getErrorCodeFromJsonString(content));
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content));
         String userToken = getTokenFromJsonString(content);
 
         //List of users phase
@@ -90,10 +83,10 @@ public class AdminUserControllerTest extends AbstractJsonHandler {
                 .andReturn();
 
         int status1 = result1.getResponse().getStatus();
-        assertEquals(200, status1);
+        assertEquals(HTTP_STATUS_OK, status1);
         String content1 = result1.getResponse().getContentAsString();
         System.out.println("add "+ content1);
-        assertEquals("0", getErrorCodeFromJsonString(content1));
+        assertEquals(ERROR_CODE_OK, getErrorCodeFromJsonString(content1));
     }
 
 }
