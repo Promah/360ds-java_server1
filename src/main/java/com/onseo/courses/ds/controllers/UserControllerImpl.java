@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
 import com.onseo.courses.ds.SessionTokenImpl.TokenInfo;
 import com.onseo.courses.ds.entityuser.User;
@@ -13,7 +12,6 @@ import com.onseo.courses.ds.logger.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileReader;
@@ -168,7 +166,7 @@ public class UserControllerImpl implements BaseUserController {
         JsonObject userData = new JsonObject();
         userData.addProperty("id", user.getId());
         userData.addProperty("first_name", user.getFirstName());
-        userData.addProperty("last_name", user.getLastdName());
+        userData.addProperty("last_name", user.getLastName());
         userData.addProperty("avatar_url", user.getAvatarUrl());
 
         return userData;

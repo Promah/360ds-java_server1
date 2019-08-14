@@ -2,7 +2,6 @@ package com.onseo.courses.ds.admin.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
 import com.onseo.courses.ds.admin.interfaces.BaseAdminUserController;
@@ -11,9 +10,7 @@ import com.onseo.courses.ds.logger.Logging;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class AdminUserControllerImpl implements BaseAdminUserController {
@@ -36,10 +33,10 @@ public class AdminUserControllerImpl implements BaseAdminUserController {
             try{
                 SessionToken.updateExpireTime(ttl);
                 if (subordinatesIdList != null){
-                    user.setSubordinates_id(subordinatesIdList);
+                    user.setSubordinatesId(subordinatesIdList);
                 }
                 if (managerIdList != null){
-                    user.setManager_id(managerIdList);
+                    user.setManagerId(managerIdList);
                 }
 
                 userList.add(user);
@@ -89,7 +86,7 @@ public class AdminUserControllerImpl implements BaseAdminUserController {
         JsonObject userData = new JsonObject();
         userData.addProperty("id", user.getId());
         userData.addProperty("firstName", user.getFirstName());
-        userData.addProperty("lastName", user.getLastdName());
+        userData.addProperty("lastName", user.getLastName());
         userData.addProperty("avatar_url", user.getAvatarUrl());
 
         return userData;
