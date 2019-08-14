@@ -3,14 +3,27 @@ package com.onseo.courses.ds.quiz;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.onseo.courses.ds.controllers.QuizAnswerOptionControllerImpl;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
+@Document(collection = "quiz_question")
 public class QuizQuestion {
+    @Id
     private String questionId;
+    @Field("text")
     private String text;
-    private QuizQuestionKind questionKind;
+    @Field("questionKind")
+    private QuizQuestionKind quizQuestionKind;
+    @Field("simulateAnswerCnt")
     private int simulateAnswerCnt;
+    @Field("answer_options")
+    @DBRef
+    private List<String> answerOptionsIds;
+
     private List<QuizAnswerOption> answerOptions;
 
     @JsonCreator
@@ -18,9 +31,11 @@ public class QuizQuestion {
                         @JsonProperty("questionKind") QuizQuestionKind quizQuestionKind){
         this.questionId = questionId;
         this.text = text;
-        this.questionKind = quizQuestionKind;
+        this.quizQuestionKind = quizQuestionKind;
         answerOptions = new QuizAnswerOptionControllerImpl().getQuizAnswers();
     }
+
+
 
     public String getQuestionId() {
         return questionId;
@@ -38,12 +53,12 @@ public class QuizQuestion {
         this.text = text;
     }
 
-    public QuizQuestionKind getQuestionKind() {
-        return questionKind;
+    public QuizQuestionKind getQuizQuestionKind() {
+        return quizQuestionKind;
     }
 
-    public void setQuestionKind(QuizQuestionKind questionKind) {
-        this.questionKind = questionKind;
+    public void setQuizQuestionKind(QuizQuestionKind quizQuestionKind) {
+        this.quizQuestionKind = quizQuestionKind;
     }
 
     public int getSimulateAnswerCnt() {
@@ -62,12 +77,20 @@ public class QuizQuestion {
         this.answerOptions = answerOptions;
     }
 
+    public List<String> getAnswerOptionsIds() {
+        return answerOptionsIds;
+    }
+
+    public void setAnswerOptionsIds(List<String> answerOptionsIds) {
+        this.answerOptionsIds = answerOptionsIds;
+    }
+
     @Override
     public String toString() {
         return "QuizQuestion{" +
                 "questionId='" + questionId + '\'' +
                 ", text='" + text + '\'' +
-                ", questionKind='" + questionKind + '\'' +
+                ", questionKind='" + quizQuestionKind + '\'' +
                 ", answerOptions=" + answerOptions +
                 '}';
     }
