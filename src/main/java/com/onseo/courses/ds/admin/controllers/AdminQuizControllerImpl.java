@@ -21,28 +21,30 @@ public class AdminQuizControllerImpl implements BaseAdminQuizController {
     private String object;
     private int errorCode = -1;
     private String errorMessage = "";
-    String jsonObject;
+    private String jsonObject;
 
     @Override
     public String getQuiz(String quizId) {
 
-
         if (SessionToken.isExpired()){
             errorCode = -101;
+            jsonObject = null;
             errorMessage = "Invalid accessToken: token time is expired";
             Logging.getLogger().warn("Error in restoreSession: token time is expired");
         }else {
             SessionToken.updateExpireTime(ttl);
             errorCode = 0;
+            errorMessage = "";
             try{
                 SessionToken.updateExpireTime(ttl);
                 QuizControllerImpl quizController = new QuizControllerImpl();
                 quizController.setAdminRequest();
-
                 Gson gson = new GsonBuilder().create();
+                jsonObject = null;
                 jsonObject = gson.toJson(quizController.getOpenQuiz(quizId).getOneQuiz(quizId));
             }catch (Exception e){
                 errorCode = -102;
+                jsonObject = null;
                 errorMessage = "Invalid request";
                 Logging.getLogger().error("Error in restore session: invalid request");
             }
@@ -74,6 +76,7 @@ public class AdminQuizControllerImpl implements BaseAdminQuizController {
                 }
                 writeRequest(object);
                 Gson gson = new GsonBuilder().create();
+                jsonObject = null;
                 jsonObject = gson.toJson(quiz);
             }catch (Exception e){
                 errorCode = -102;
