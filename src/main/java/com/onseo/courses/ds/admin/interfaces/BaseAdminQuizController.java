@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 public interface BaseAdminQuizController {
 
     @RequestMapping(value = "/quiz", params = "quizId")
-    String getQuiz(@RequestParam String quizId);
+    String getQuiz(@RequestHeader(name="accessToken")String token,
+                   @RequestParam String quizId);
 
     @RequestMapping(value = "/quiz")
-    String postQuiz(@RequestBody Quiz quiz);
+    String postQuiz(@RequestHeader(name="accessToken")String token,
+                    @RequestBody Quiz quiz);
 }
 

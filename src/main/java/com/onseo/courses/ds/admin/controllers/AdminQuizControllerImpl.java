@@ -17,14 +17,14 @@ import java.io.RandomAccessFile;
 @RestController
 public class AdminQuizControllerImpl implements BaseAdminQuizController {
 
-    private Long ttl = 30L;
+    private Long ttl = 600L;
     private String object;
     private int errorCode = -1;
     private String errorMessage = "";
     private String jsonObject;
 
     @Override
-    public String getQuiz(String quizId) {
+    public String getQuiz(String token, String quizId) {
 
         if (SessionToken.isExpired()){
             errorCode = -101;
@@ -55,7 +55,7 @@ public class AdminQuizControllerImpl implements BaseAdminQuizController {
     }
 
     @Override
-    public String postQuiz(Quiz quiz) {
+    public String postQuiz(String token, Quiz quiz) {
 
         if (SessionToken.isExpired()){
             errorCode = -101;
