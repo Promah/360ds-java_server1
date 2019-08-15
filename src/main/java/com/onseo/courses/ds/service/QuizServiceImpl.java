@@ -22,6 +22,7 @@ public class QuizServiceImpl implements QuizService {
     public void addQuiz(Quiz quiz) {
         List<String> questionsIds = questionService.saveArray(quiz.getQuestions());
         quiz.setQuestionsIds(questionsIds);
+
         repository.save(quiz);
     }
 
