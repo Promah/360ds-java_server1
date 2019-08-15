@@ -1,1 +1,19 @@
-[{"user":{"id":"59","firstName":"jim","lastName":"stoper","avatar_url":"urlf2","subordinates_id":["77","22"],"manager_id":["87"]},"email":"jim2@email","password":"pass58"}]
+[
+  {
+    "user": {
+      "id": "59",
+      "firstName": "jim",
+      "lastName": "stoper",
+      "avatar_url": "urlf2",
+      "subordinates_id": [
+        "77",
+        "22"
+      ],
+      "manager_id": [
+        "87"
+      ]
+    },
+    "email": "jim2@email",
+    "password": "pass58"
+  }
+]

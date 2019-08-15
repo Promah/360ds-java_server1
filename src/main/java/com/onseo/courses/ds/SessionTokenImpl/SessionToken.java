@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.onseo.courses.ds.interfaces.SessionTokenInterface;
 import com.onseo.courses.ds.logger.Logging;
-import com.sun.istack.internal.logging.Logger;
 import net.oauth.jsontoken.Checker;
 import net.oauth.jsontoken.JsonToken;
 import net.oauth.jsontoken.JsonTokenParser;
@@ -38,10 +37,9 @@ public class    SessionToken implements SessionTokenInterface {
         HmacSHA256Signer signer = null;
 
         signer = new HmacSHA256Signer(ISSUER, null, SIGNING_KEY.getBytes());
-
         //was local variable
         token = new JsonToken(signer);
-        
+
         token.setAudience(AUDIENCE);
         token.setIssuedAt(new Instant(calendar.getTimeInMillis()));
         token.setExpiration(new Instant(calendar.getTimeInMillis() + 1000L*durationTime));
@@ -53,7 +51,7 @@ public class    SessionToken implements SessionTokenInterface {
         JsonObject payload = token.getPayloadAsJsonObject();
 
         payload.add("info", request);
-
+        System.out.println("create one " + token.toString());
         return token.serializeAndSign();
     }
 
@@ -69,13 +67,11 @@ public class    SessionToken implements SessionTokenInterface {
         JsonTokenParser parser = new JsonTokenParser(locators,checker);
 
         JsonToken jsonToken = parser.verifyAndDeserialize(token);
-        System.out.println("from verif " + jsonToken.getExpiration().getMillis());
 
         JsonObject payload = jsonToken.getPayloadAsJsonObject();
 
         String issuer = payload.getAsJsonPrimitive("iss").getAsString();
         String userId = payload.getAsJsonObject("info").getAsJsonPrimitive("userId").getAsString();
-        System.out.println("USER ID CREATED FROM JSON " + userId);
 
         if(issuer.equals(ISSUER) && !StringUtils.isEmpty(userId)){
             tokenInfo.setUserId(userId);
@@ -97,6 +93,13 @@ public class    SessionToken implements SessionTokenInterface {
 
     public static boolean isValid(String receivedToken) throws SignatureException{
         return token.serializeAndSign().equals(receivedToken);
+    }
+
+    public static void checkOutPrevious(){
+        Calendar calendar = Calendar.getInstance();
+        if(token != null){
+            token.setExpiration(new Instant(calendar.getTimeInMillis()));
+        }
     }
 
     public static boolean isExpired(){

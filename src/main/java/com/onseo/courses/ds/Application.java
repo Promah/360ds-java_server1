@@ -1,5 +1,6 @@
 package com.onseo.courses.ds;
 
+import com.onseo.courses.ds.db_imitation_classes.UserTable;
 import com.onseo.courses.ds.logger.Logging;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ public class Application {
 	private static void runApplication(String[] args){
 		try {
 			SpringApplication.run(Application.class, args);
+			new UserTable();
 			Logging.getLogger().info("Application run");
 		}
 		catch (Exception ex){
