@@ -4,11 +4,11 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.logger.Logging;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +35,7 @@ public interface JsonResponseHandler {
         userData.add("manager_id", gson.toJsonTree(user.getManagerIds()));
         userData.addProperty("email", email);
         if (isAdmin) {
-            userData.addProperty("password", password + user.getId());
+            userData.addProperty("password", password);
         }
 
         return userData;
@@ -50,8 +50,12 @@ public interface JsonResponseHandler {
     }
 
     default List<UserData> getUserDataFromFile()throws Exception{
-        JsonArray array = (JsonArray) new JsonParser().parse(new FileReader(getClass().getClassLoader()
-                .getResource("mocks/mock_db_users.json").getFile()));
+//        JsonArray array = (JsonArray) new JsonParser().parse(new FileReader(getClass().getClassLoader()
+//                .getResource("mocks/mock_db_users.json").getFile()));
+        InputStream is = this.getClass().getResourceAsStream("/mocks/mock_db_users.json");
+        String content = IOUtils.toString(is, StandardCharsets.UTF_8);
+        System.out.println("content " + content);
+        JsonArray array = (JsonArray) new JsonParser().parse(content);
         List<UserData> userData = new ArrayList<>();
         for (JsonElement element : array){
             User userInfo = new User();

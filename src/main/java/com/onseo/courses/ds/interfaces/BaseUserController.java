@@ -10,10 +10,10 @@ public interface BaseUserController {
     public String authUser(@RequestBody String loginData);
 
     @PostMapping("/restore_session")
-    public String restoreSession(@RequestHeader(name = "access_token") String token);
+    public String restoreSession(@RequestHeader(name = "accessToken") String token);
 
     @GetMapping("/status")
-    public String getStatus(@RequestHeader(name = "access_token") String token);
+    public String getStatus(@RequestHeader(name = "accessToken") String token);
 
     @GetMapping("/userlist")
     public String getUserList();
