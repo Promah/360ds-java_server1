@@ -41,7 +41,7 @@ public class AdminQuizControllerImpl implements BaseAdminQuizController {
                 quizController.setAdminRequest();
                 Gson gson = new GsonBuilder().create();
                 jsonObject = null;
-                jsonObject = gson.toJson(quizController.getOpenQuiz(quizId).getOneQuiz(quizId));
+                jsonObject = gson.toJson(quizController.getQuizData(quizId).getOneQuiz(quizId));
             }catch (Exception e){
                 errorCode = -102;
                 jsonObject = null;
