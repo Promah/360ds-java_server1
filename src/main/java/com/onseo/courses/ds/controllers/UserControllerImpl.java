@@ -3,11 +3,13 @@ package com.onseo.courses.ds.controllers;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.onseo.courses.ds.SessionTokenImpl.SessionToken;
 import com.onseo.courses.ds.SessionTokenImpl.TokenInfo;
 import com.onseo.courses.ds.constants.ErrorCodes;
+import com.onseo.courses.ds.db_imitation_classes.UserTable;
 import com.onseo.courses.ds.entityuser.User;
 import com.onseo.courses.ds.interfaces.BaseUserController;
 import com.onseo.courses.ds.interfaces.JsonResponseHandler;
@@ -29,13 +31,11 @@ import static com.onseo.courses.ds.SessionTokenImpl.SessionToken.createToken;
 @RestController
 public class UserControllerImpl implements BaseUserController, JsonResponseHandler {
 
-    private Long ttl = 30L;
+    private Long ttl = 600L;
     //rewrite to Role Enum
     private final static boolean USER = false;
 
-    private final static int WRONG_ID               =  0;
-
-    private final static String START_PATH           = "src/main/resources/mocks/request_mocks";
+    private final static int WRONG_ID       =  0;
 
     @Override
     public String authUser(String loginData) {
@@ -47,26 +47,25 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
         int errorCode = -1;
         String errorMessage = "";
 
+        SessionToken.checkOutPrevious();
+
         JsonObject responseData = new JsonObject();
 
         try {
             uId = property.get("uId");
             password = property.get("password");
-            Integer selectedId = Integer.valueOf(uId);
-            System.out.println("uid " + uId + " int " + selectedId);
             String token = "";
 
-            createJsonFileRequest(uId, password);
+//            createJsonFileRequest(uId, password);
 
-            List<UserData> userDataList = getUserDataFromFile();
-            selectedId = isAvailable(uId, userDataList);
-            if (selectedId > WRONG_ID) {
-
-                UserData data = userDataList.get(selectedId);
+//            List<UserData> userDataList = getUserDataFromFile();
+//            List<UserData> userDataList = UserTable.getUserDataList();
+            if (UserTable.getIdList().contains(uId)) {
+//                UserData data = userDataList.get(selectedId);
+                UserData data = UserTable.getUserData(uId);
                 User user = data.getUser();
-                System.out.println(data.getPassword());
-                if (password.equals(data.getPassword())) {
 
+                if (password.equals(data.getPassword())) {
                     token = createToken(uId, ttl);
 
                     if (user != null) {
@@ -83,12 +82,12 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
                 } else {
                     errorCode = ErrorCodes.INVALID_CREDENTIALS;
                     errorMessage = "Invalid credentials: invalid password";
-                    Logging.getLogger().warn("Error in authUser: wrong password = " + selectedId);
+                    Logging.getLogger().warn("Error in authUser: wrong password = " + password);
                 }
             } else {
                 errorCode = ErrorCodes.INVALID_CREDENTIALS;
                 errorMessage = "Invalid credentials: user id is not exists";
-                Logging.getLogger().warn("Error in authUser: wrong id = " + selectedId);
+                Logging.getLogger().warn("Error in authUser: wrong id = " + uId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +120,8 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
                 SessionToken.updateExpireTime(ttl);
                 TokenInfo tokenInfo = SessionToken.verifyToken(token);
                 if (tokenInfo != null){
-                    List<UserData> userDataList = getUserDataFromFile();
+//                    List<UserData> userDataList = getUserDataFromFile();
+                    List<UserData> userDataList = UserTable.getUserDataList();
 
                     String userId = tokenInfo.getUserId();
                     int selectedId = isAvailable(userId, userDataList);
@@ -231,7 +231,7 @@ public class UserControllerImpl implements BaseUserController, JsonResponseHandl
 
     private void createJsonFileRequest(String uId, String password) {
         writeRequestToFile(createJsonRequest(Arrays.asList("uId", "password"), Arrays.asList(uId, password)),
-                START_PATH + "/auth_user_request_mock.json");
+                Objects.requireNonNull(getClass().getClassLoader().getResource("mocks/request_mocks/auth_user_request_mock.json")).getPath());
 
     }
 

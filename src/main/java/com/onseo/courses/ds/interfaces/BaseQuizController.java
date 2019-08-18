@@ -19,7 +19,8 @@ public interface BaseQuizController {
     ResponseContainer<List<QuizSummary>> getQuizList() throws IOException;
 
     @GetMapping("/open/{quizAssignmentID}")
-    QuizOpenResponse getOpenQuiz(@PathVariable String quizAssignmentID);
+    String getOpenQuiz(@PathVariable String quizAssignmentID,
+                       @RequestHeader(name="accessToken")String token);
 
     @PostMapping("/submit/{quizAssignmentID}")
     Object postQuizSubmit(@PathVariable(name = "quizAssignmentID") String quizAssignmentID) throws IOException, org.json.simple.parser.ParseException;

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 public interface BaseAdminUserController {
 
     @PutMapping("/user")
-    public String addUser(@RequestHeader(name="access_token")String token,
+    public String addUser(@RequestHeader(name="accessToken")String token,
                           @RequestBody JsonResponseHandler.UserData data);
 
     @RequestMapping("/userList")
-    public String getUserList(@RequestHeader(name="access_token")String token);
+    public String getUserList(@RequestHeader(name="accessToken")String token);
 
 }
