@@ -29,7 +29,7 @@ public interface JsonResponseHandler {
         JsonObject userData = new JsonObject();
         userData.addProperty("id", user.getId());
         userData.addProperty("firstName", user.getFirstName());
-        userData.addProperty("lastName", user.getLastdName());
+        userData.addProperty("lastName", user.getLastName());
         userData.addProperty("avatar_url", user.getAvatarUrl());
         userData.add("subordinates_id", gson.toJsonTree(user.getSubordinatesIds()));
         userData.add("manager_id", gson.toJsonTree(user.getManagerIds()));
@@ -62,9 +62,9 @@ public interface JsonResponseHandler {
             userInfo.setId(element.getAsJsonObject().get("id").getAsString());
             userInfo.setFirstName(element.getAsJsonObject().get("firstName").getAsString());
             userInfo.setLastName(element.getAsJsonObject().get("lastName").getAsString());
-            userInfo.setAvatar_url(element.getAsJsonObject().get("avatar_url").getAsString());
-            userInfo.setSubordinates_id(getListFromJson(element.getAsJsonObject().get("subordinates_id").getAsJsonArray()));
-            userInfo.setManager_id(getListFromJson(element.getAsJsonObject().get("manager_id").getAsJsonArray()));
+            userInfo.setAvatarUrl(element.getAsJsonObject().get("avatar_url").getAsString());
+            userInfo.setSubordinatesId(getListFromJson(element.getAsJsonObject().get("subordinates_id").getAsJsonArray()));
+            userInfo.setManagerId(getListFromJson(element.getAsJsonObject().get("manager_id").getAsJsonArray()));
 
             userData.add(new UserData(userInfo,
                     element.getAsJsonObject().get("email").getAsString(),
