@@ -1,17 +1,16 @@
 package com.onseo.courses.ds.service;
 
 import com.onseo.courses.ds.entityuser.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.Assert;
+
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,16 +22,20 @@ public class UserServiceImplTest {
     @Test
     public void getAllUsersTest() {
         List<User> users = userService.getAllUsers();
-        assertFalse(users.isEmpty());
+        Assert.assertTrue(!users.isEmpty());
     }
 
     @Test
     public void createUser() {
+        User user = new User();
+        user.setFirstName("test");
+        user.setLastName("test");
+        userService.createUser(user, "password");
     }
 
     @Test
     public void getUserById() {
-        Optional<User> user = userService.getUserById("5d2a4dd29872ab0bfecc1c9f");
-        assertNotNull(user.get());
+        User user = userService.getUserByUId("1");
+        Assert.assertNotNull(user);
     }
 }

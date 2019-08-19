@@ -1,14 +1,47 @@
 package com.onseo.courses.ds.entityuser;
 
-import java.util.List;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+@Document(collection = "users")
 public class User {
+
+    @Id
     private String id;
+    @Field("firstName")
     private String firstName;
+    @Field("lastName")
     private String lastName;
-    private String avatar_url;
-    private List<String> subordinates_id;
-    private List<String> manager_id;
+    @Field("avatar_url")
+    private String avatarUrl;
+    @Field("subordinates_id")
+    private List<String> subordinatesId;
+    @Field("manager_id")
+    private List<String> managerId;
+    @Field("uId")
+    private String uId;
+
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String uId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.uId = uId;
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.avatarUrl = user.getAvatarUrl();
+        this.subordinatesId = user.getSubordinatesIds();
+        this.managerId = user.getManagerIds();
+        this.uId = user.getuId();
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -20,18 +53,18 @@ public class User {
         this.lastName = secondName;
     }
 
-    public void setAvatar_url(String avatar_url) {
-        this.avatar_url = avatar_url;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     //    public void setAvatarUrl(String photo) {this.avatar_url = ""+photo;    }
 
-    public void setSubordinates_id(List<String> subordinates_id) {
-        this.subordinates_id = subordinates_id;
+    public void setSubordinatesId(List<String> subordinatesId) {
+        this.subordinatesId = subordinatesId;
     }
 
-    public void setManager_id(List<String> manager_id) {
-        this.manager_id = manager_id;
+    public void setManagerId(List<String> managerId) {
+        this.managerId = managerId;
     }
 
     public String getId() {
@@ -40,22 +73,29 @@ public class User {
     public String getFirstName(){
         return firstName;
     }
-    public String getLastdName() {
+    public String getLastName() {
         return lastName;
     }
-    public String getAvatarUrl() {return avatar_url;}
-    public List<String> getSubordinatesIds() { return subordinates_id; }
+    public String getAvatarUrl() {return avatarUrl;}
+    public List<String> getSubordinatesIds() { return subordinatesId; }
     public List<String> getManagerIds() {
-        return manager_id;
+        return managerId;
     }
 
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
 
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + lastName + '\'' +
-                ", avatar_url=" + avatar_url +
+                ", avatar_url=" + avatarUrl +
                 '}';
     }
 }
