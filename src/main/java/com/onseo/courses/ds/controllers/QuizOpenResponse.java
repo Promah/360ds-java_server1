@@ -23,6 +23,9 @@ public class QuizOpenResponse {
     public List<Quiz> getQuiz() {
         return quiz;
     }
+    public Quiz getOneQuiz(String quizId){
+        return quiz.get(Integer.valueOf(quizId));
+    }
     public List<QuizResponse> getQuizResponse() {
         return answers;
     }
